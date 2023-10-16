@@ -10,7 +10,7 @@
         <form class="w-full" id="payment-form" action="{{route('payments.store')}}" method="post">
             @csrf
             <div class="mb-5">
-                <label for="name" class="font-medium text uppercase block">Your name</label>
+                <label for="name" class="font-medium text uppercase block">Name</label>
                 <input type="text" name="name" id="name" required
                     class="mt-1 w-full p-3 rounded-xl border-2 border-gray-200 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                 @if($errors->has('name'))
@@ -18,7 +18,7 @@
                 @endif
             </div>
             <div class="mb-5">
-                <label for="email" class="font-medium text uppercase block">Your email</label>
+                <label for="email" class="font-medium text uppercase block">Email</label>
                 <input type="email" name="email" id="email" required
                     class="mt-1 w-full p-3 rounded-xl border-2 border-gray-200 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                 @if($errors->has('email'))
@@ -26,7 +26,7 @@
                 @endif
             </div>
             <div class="mb-5">
-                <label for="url" class="font-medium text uppercase block">Your website</label>
+                <label for="url" class="font-medium text uppercase block">Landing Page URL</label>
                 <input type="url" name="url" id="url" required
                     class="mt-1 w-full p-3 rounded-xl border-2 border-gray-200 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                 @if($errors->has('url'))
@@ -43,7 +43,7 @@
             </div>
             <button
                 class="bg-red-500 p-3 w-full rounded-xl text-white uppercase font-bold enabled:hover:bg-red-600 transition-all duration-300 disabled:opacity-50 ">
-                Roast my landing page 🔥
+                Roast my landing page ({{ config('stripe.charge_amount') }}$) 🔥
             </button>
         </form>
     </div>
