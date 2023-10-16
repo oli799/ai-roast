@@ -7,7 +7,7 @@ use App\Models\Payment;
 
 class PaymentObserver
 {
-    public function created(Payment $payment)
+    public function created(Payment $payment): void
     {
         CreateRoast::dispatch($payment);
     }

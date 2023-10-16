@@ -1,0 +1,18 @@
+includes:
+    - ./vendor/nunomaduro/larastan/extension.neon
+    - ./vendor/tomasvotruba/bladestan/config/extension.neon
+
+parameters:
+    bladestan:
+        template_paths:
+            - resources/views
+    paths:
+        - app/
+        - database/
+        - config/
+
+    excludePaths:
+        - ./app/Policies/RolePolicy.php
+
+
+    level: 8

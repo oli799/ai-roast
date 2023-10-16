@@ -2,23 +2,23 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PaymentResource\Pages;
+use App\Filament\Resources\PaymentResource\Pages\ManagePayments;
 use App\Models\Payment;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Form;
 use Filament\Notifications\Notification;
-use Filament\Resources\Form;
 use Filament\Resources\Resource;
-use Filament\Resources\Table;
-use Filament\Tables;
 use Filament\Tables\Actions\Action;
+use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
 
 class PaymentResource extends Resource
 {
     protected static ?string $model = Payment::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-cash';
+    protected static ?string $navigationIcon = 'heroicon-o-banknotes';
 
     public static function canCreate(): bool
     {
@@ -32,19 +32,19 @@ class PaymentResource extends Resource
                 TextInput::make('name')
                     ->autofocus()
                     ->required()
-                    ->max(255)
+                    ->maxLength(255)
                     ->placeholder('John Doe'),
 
                 TextInput::make('email')
                     ->required()
                     ->email()
-                    ->max(255)
+                    ->maxLength(255)
                     ->placeholder('Email'),
 
                 TextInput::make('url')
                     ->required()
                     ->url()
-                    ->max(255)
+                    ->maxLength(255)
                     ->placeholder('https://example.com'),
 
                 RichEditor::make('roast')
@@ -82,17 +82,17 @@ class PaymentResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                EditAction::make(),
                 Action::make('regenerateRoast')
                     ->label('Regenerate Roast')
-                    ->icon('heroicon-o-refresh')
+                    ->icon('heroicon-o-arrow-path')
                     ->action('regenerateRoast')
                     ->visible(fn (Payment $payment): bool => empty($payment->email_sent_at))
                     ->requiresConfirmation(),
 
                 Action::make('sendEmail')
                     ->label('Send Email')
-                    ->icon('heroicon-o-mail')
+                    ->icon('heroicon-o-envelope')
                     ->action('sendEmail')
                     ->visible(fn (Payment $payment): bool => empty($payment->email_sent_at))
                     ->requiresConfirmation(),
@@ -104,23 +104,23 @@ class PaymentResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManagePayments::route('/'),
+            'index' => ManagePayments::route('/'),
         ];
     }
 
-    public function regenerateRoast()
+    public function regenerateRoast(): void
     {
         Notification::make()
             ->title('Starting roast regeneration!')
-            ->icon('heroicon-o-refresh')
+            ->icon('heroicon-o-arrow-path')
             ->success();
     }
 
-    public function sendEmail()
+    public function sendEmail(): void
     {
         Notification::make()
             ->title('Email sent!')
-            ->icon('heroicon-o-mail')
+            ->icon('heroicon-o-envelope')
             ->success();
     }
 }

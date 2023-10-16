@@ -18,9 +18,9 @@ class CreateRoast implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public $tires = 3;
+    public int $tires = 3;
 
-    public $timeout = 120;
+    public int $timeout = 120;
 
     /**
      * Create a new job instance.
@@ -74,12 +74,13 @@ class CreateRoast implements ShouldQueue
         }
     }
 
-    private function getMetaTagValue($url, $metaTagName)
+    private function getMetaTagValue(string $url, string $metaTagName): ?string
     {
         try {
             $response = Http::timeout(30)->get($url);
-            $html = (string) $response->getBody();
-        } catch (Throwable $th) {
+
+            $html = (string) $response->body();
+        } catch (Throwable) {
             Log::error("Failed to get open {$url}.");
 
             return null;
@@ -91,7 +92,7 @@ class CreateRoast implements ShouldQueue
         $metaTags = $dom->getElementsByTagName('meta');
         $metaTagValue = null;
 
-        if (! collect($metaTags)->count()) {
+        if (collect($metaTags)->count() === 0) {
             return null;
         }
 

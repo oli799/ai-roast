@@ -10,7 +10,7 @@
     @stack('scripts')
 </head>
 
-<body class="w-screen h-screen flex justify-center items-center p-6">
+<body>
     @yield('content')
 </body>
 
