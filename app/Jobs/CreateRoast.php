@@ -50,14 +50,14 @@ class CreateRoast implements ShouldQueue
 
             $prompt .= "At the end of the feedback create a 10-20 bullet point list from the suggested imporvements. Explain the top 5 most required imporvements and propose concrete solutions for each with links and specific informations. \n\n";
 
-            $result = OpenAI::completions()->create([
-                'model' => 'text-davinci-003',
-                'prompt' => $prompt,
-                'temperature' => 0.7,
-                'max_tokens' => 2000,
-            ]);
+            // $result = OpenAI::completions()->create([
+            //     'model' => 'text-davinci-003',
+            //     'prompt' => $prompt,
+            //     'temperature' => 0.7,
+            //     'max_tokens' => 2000,
+            // ]);
 
-            $roast = $result['choices'][0]['text'];
+            $roast = '';
 
             $this->payment->update([
                 'roast' => $roast,
