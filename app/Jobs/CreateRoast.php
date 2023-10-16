@@ -3,7 +3,9 @@
 namespace App\Jobs;
 
 use App\Models\Payment;
+use App\Models\User;
 use DOMDocument;
+use Filament\Notifications\Notification;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -66,6 +68,14 @@ class CreateRoast implements ShouldQueue
             Log::info("Roast is ready for payment {$this->payment->id}.");
         } catch (Throwable $th) {
             if ($this->attempts() > $this->tires - 1) {
+                if ($admin = User::query()->where('email', config('app.admin_email'))->first()) {
+                    Notification::make()
+                        ->title('Roast creation failed.')
+                        ->body("Roast creation failed for payment {$this->payment->id}.")
+                        ->danger()
+                        ->sendToDatabase($admin);
+                }
+
                 Log::error("Roast creation failed for payment {$this->payment->id}.");
                 throw $th;
             }

@@ -3,7 +3,10 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\PaymentResource\Pages\ManagePayments;
+use App\Jobs\CreateRoast;
+use App\Mail\RoastCreated;
 use App\Models\Payment;
+use Exception;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -11,8 +14,10 @@ use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Mail;
 
 class PaymentResource extends Resource
 {
@@ -82,7 +87,6 @@ class PaymentResource extends Resource
 
             ])
             ->actions([
-                EditAction::make(),
                 Action::make('regenerateRoast')
                     ->label('Regenerate Roast')
                     ->icon('heroicon-o-arrow-path')
@@ -96,6 +100,8 @@ class PaymentResource extends Resource
                     ->action('sendEmail')
                     ->visible(fn (Payment $payment): bool => empty($payment->email_sent_at))
                     ->requiresConfirmation(),
+                EditAction::make(),
+                ViewAction::make(),
             ])
             ->bulkActions([
             ]);
@@ -108,19 +114,31 @@ class PaymentResource extends Resource
         ];
     }
 
-    public function regenerateRoast(): void
+    public function regenerateRoast(Payment $payment): void
     {
+        CreateRoast::dispatch($payment);
+
         Notification::make()
             ->title('Starting roast regeneration!')
             ->icon('heroicon-o-arrow-path')
             ->success();
+
     }
 
-    public function sendEmail(): void
+    public function sendEmail(Payment $payment): void
     {
-        Notification::make()
-            ->title('Email sent!')
-            ->icon('heroicon-o-envelope')
-            ->success();
+        try {
+            Mail::to($payment->email)->send(new RoastCreated($payment));
+
+            Notification::make()
+                ->title('Email sent!')
+                ->icon('heroicon-o-envelope')
+                ->success();
+        } catch (Exception) {
+            Notification::make()
+                ->title('Error while sending email!')
+                ->icon('heroicon-o-envelope')
+                ->danger();
+        }
     }
 }
