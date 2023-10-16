@@ -3,6 +3,8 @@
 use App\Providers\AppServiceProvider;
 use App\Providers\AuthServiceProvider;
 use App\Providers\EventServiceProvider;
+use App\Providers\Filament\AdminPanelProvider;
+use App\Providers\HorizonServiceProvider;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
@@ -180,9 +182,10 @@ return [
          */
         AppServiceProvider::class,
         AuthServiceProvider::class,
-        // App\Providers\BroadcastServiceProvider::class,
+        AdminPanelProvider::class,
         EventServiceProvider::class,
         RouteServiceProvider::class,
+        HorizonServiceProvider::class,
     ])->toArray(),
 
     /*
