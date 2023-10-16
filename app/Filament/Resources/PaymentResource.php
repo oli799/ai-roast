@@ -79,7 +79,7 @@ class PaymentResource extends Resource
                     ->sortable(),
             ])
             ->filters([
-                //
+
             ])
             ->actions([
                 EditAction::make(),

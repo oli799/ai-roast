@@ -97,7 +97,7 @@ class CreateRoast implements ShouldQueue
         }
 
         foreach ($metaTags as $tag) {
-            if ($tag->getAttribute('name') == $metaTagName) {
+            if ($tag->getAttribute('name') === $metaTagName) {
                 $metaTagValue = $tag->getAttribute('content');
                 break;
             }
