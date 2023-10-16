@@ -18,9 +18,9 @@ class CreateRoast implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public int $tires = 3;
+    public int $tires;
 
-    public int $timeout = 120;
+    public int $timeout;
 
     /**
      * Create a new job instance.
@@ -28,6 +28,8 @@ class CreateRoast implements ShouldQueue
     public function __construct(
         public Payment $payment,
     ) {
+        $this->tires = app()->environment('production') ? 3 : 1;
+        $this->timeout = app()->environment('production') ? 120 : 30;
     }
 
     /**
@@ -63,12 +65,12 @@ class CreateRoast implements ShouldQueue
 
             Log::info("Roast is ready for payment {$this->payment->id}.");
         } catch (Throwable $th) {
-            if ($this->attempts() > 2) {
+            if ($this->attempts() > $this->tires - 1) {
                 Log::error("Roast creation failed for payment {$this->payment->id}.");
                 throw $th;
             }
 
-            $this->release(120);
+            $this->release($this->timeout);
 
             return;
         }
