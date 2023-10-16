@@ -13,9 +13,9 @@ use Illuminate\Support\Facades\Route;
 | routes are loaded by the RouteServiceProvider and all of them will
 | be assigned to the "web" middleware group. Make something great!
 |
-*/
+ */
 
 Route::get('/', HomeController::class);
 
-Route::post('/payments', [PaymentsController::class, 'store'])->name('payments.store');
-Route::get('/payments', [PaymentsController::class, 'index'])->name('payments.index');
+Route::post('/payments', (new PaymentsController())->store(...))->name('payments.store');
+Route::get('/payments', (new PaymentsController())->index(...))->name('payments.index');

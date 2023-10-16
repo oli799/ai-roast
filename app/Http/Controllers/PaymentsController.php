@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Payment;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Str;
 use Stripe\Exception\CardException;
 use Stripe\PaymentIntent;
@@ -10,7 +12,7 @@ use Stripe\Stripe;
 
 class PaymentsController extends Controller
 {
-    public function index()
+    public function index(): View
     {
         if (! $token = request('token') ?? false) {
             abort(404);
@@ -23,7 +25,7 @@ class PaymentsController extends Controller
         return view('success');
     }
 
-    public function store()
+    public function store(): RedirectResponse
     {
         Stripe::setApiKey(config('stripe.secret'));
 
@@ -45,7 +47,7 @@ class PaymentsController extends Controller
                 'receipt_email' => request()->input('email'),
             ]);
 
-            Payment::create([
+            Payment::query()->create([
                 'name' => request()->input('name'),
                 'email' => request()->input('email'),
                 'token' => $token = Str::uuid(),
@@ -54,7 +56,7 @@ class PaymentsController extends Controller
             ]);
 
             return redirect('/payments?token='.$token);
-        } catch (CardException $e) {
+        } catch (CardException) {
             return redirect('/')->withErrors([
                 'payment' => 'There was a problem with your payment.',
             ])->withInput();
