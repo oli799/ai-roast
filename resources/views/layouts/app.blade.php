@@ -10,8 +10,14 @@
     @stack('scripts')
 </head>
 
-<body>
-    @yield('content')
+<body class="w-screen flex justify-center items-center p-6">
+
+    <x-top-left-lights />
+
+    <main class="container mx-auto">
+        @yield('content')
+    </main>
+
 </body>
 
 </html>

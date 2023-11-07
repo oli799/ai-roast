@@ -7,7 +7,11 @@ module.exports = {
         "./resources/**/*.vue",
     ],
     theme: {
-        extend: {},
+        extend: {
+            lineHeight: {
+                squished: "0.8",
+            },
+        },
     },
     plugins: [],
 };
