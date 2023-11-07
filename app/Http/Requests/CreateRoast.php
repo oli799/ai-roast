@@ -34,6 +34,9 @@ class CreateRoast extends SoloRequest implements HasBody
         ];
     }
 
+    /**
+     * @return array<string,string>
+     */
     protected function defaultHeaders(): array
     {
         return [
@@ -42,6 +45,9 @@ class CreateRoast extends SoloRequest implements HasBody
         ];
     }
 
+    /**
+     * @return array<string,mixed>
+     */
     protected function defaultBody(): array
     {
         $prompt = 'You are a fullstack webdeveloper and marketing expert. Create a 100 word constructive feedback in terms of desing, marketing and overall user experience for the following website.';

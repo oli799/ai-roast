@@ -115,7 +115,7 @@ class CreateRoast implements ShouldQueue
         return $metaTagValue;
     }
 
-    private function getScreenshotUrl(string $url)
+    private function getScreenshotUrl(string $url): string
     {
         $screenshotRequest = new CreateScreenshot(config('apiflash.api_key'), $url);
         $screenshotResponse = $screenshotRequest->send();

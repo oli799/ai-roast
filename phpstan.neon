@@ -11,8 +11,5 @@ parameters:
         - database/
         - config/
 
-    excludePaths:
-        - ./app/Policies/RolePolicy.php
-
 
     level: 8

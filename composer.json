@@ -11,12 +11,11 @@
         "laravel/framework": "^10.8",
         "laravel/horizon": "^5.21",
         "laravel/sanctum": "^3.2",
-        "sammyjo20/saloon": "^3.0",
+        "saloonphp/saloon": "^3.0",
         "stripe/stripe-php": "^10.12"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.13",
-        "driftingly/rector-laravel": "^0.26.2",
         "fakerphp/faker": "^1.9.1",
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.18",
