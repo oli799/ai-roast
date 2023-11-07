@@ -41,7 +41,7 @@ class PaymentsController extends Controller
                 'amount' => config('stripe.charge_amount') * 100,
                 'currency' => config('stripe.currency'),
                 'payment_method' => request()->input('payment_method'),
-                'description' => 'Ki fizetett '.config('stripe.charge_amount').' forintot',
+                'description' => 'Ai website roast',
                 'metadata' => ['integration_check' => 'accept_a_payment'],
                 'confirm' => true,
                 'receipt_email' => request()->input('email'),

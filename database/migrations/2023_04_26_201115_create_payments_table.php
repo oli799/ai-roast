@@ -18,7 +18,8 @@ return new class extends Migration
             $table->text('token');
             $table->string('stripe_id');
             $table->string('url');
-            $table->mediumText('roast')->nullable();
+            $table->string('image_url');
+            $table->text('roast')->nullable();
             $table->timestamp('email_sent_at')->nullable();
             $table->timestamps();
         });

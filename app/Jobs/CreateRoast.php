@@ -2,6 +2,8 @@
 
 namespace App\Jobs;
 
+use App\Http\Requests\CreateRoast as CreateRoastRequest;
+use App\Http\Requests\CreateScreenshot;
 use App\Models\Payment;
 use App\Models\User;
 use DOMDocument;
@@ -13,7 +15,6 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-use OpenAI\Laravel\Facades\OpenAI;
 use Throwable;
 
 class CreateRoast implements ShouldQueue
@@ -31,7 +32,7 @@ class CreateRoast implements ShouldQueue
         public Payment $payment,
     ) {
         $this->tires = app()->environment('production') ? 3 : 1;
-        $this->timeout = app()->environment('production') ? 120 : 30;
+        $this->timeout = app()->environment('production') ? 120 : 60;
     }
 
     /**
@@ -40,7 +41,7 @@ class CreateRoast implements ShouldQueue
     public function handle(): void
     {
         try {
-            $prompt = "You are a fullstack webdeveloper and marketing expert. Create a 100 word constructive feedback in terms of desing, marketing and overall user experience for the following website: {$this->payment->url}.";
+            $prompt = 'You are a designer, marketing and seo expert. Create a 100 word constructive feedback in terms of desing, seo and overall user experience for the following website.';
 
             if ($pageDescription = $this->getMetaTagValue($this->payment->url, 'description')) {
                 $prompt .= "The website description is: {$pageDescription}.";
@@ -50,19 +51,15 @@ class CreateRoast implements ShouldQueue
                 $prompt .= "The website keywords are: {$pageKeywords}.";
             }
 
-            $prompt .= "At the end of the feedback create a 10-20 bullet point list from the suggested imporvements. Explain the top 5 most required imporvements and propose concrete solutions for each with links and specific informations. \n\n";
+            $prompt .= "At the end of the feedback create a 5-10 bullet point list from the suggested imporvements. Explain the top 5 most required imporvements and propose concrete solutions for each with links and specific informations. \n\n";
 
-            // $result = OpenAI::completions()->create([
-            //     'model' => 'text-davinci-003',
-            //     'prompt' => $prompt,
-            //     'temperature' => 0.7,
-            //     'max_tokens' => 2000,
-            // ]);
+            $imageUrl = $this->getScreenshotUrl($this->payment->url);
 
-            $roast = '';
+            $roastRequest = new CreateRoastRequest(config('openai.api_key'), $imageUrl);
+            $roastResponse = $roastRequest->send();
 
             $this->payment->update([
-                'roast' => $roast,
+                'roast' => $roastResponse->json('choices.0.message.content'),
             ]);
 
             Log::info("Roast is ready for payment {$this->payment->id}.");
@@ -116,5 +113,13 @@ class CreateRoast implements ShouldQueue
         }
 
         return $metaTagValue;
+    }
+
+    private function getScreenshotUrl(string $url)
+    {
+        $screenshotRequest = new CreateScreenshot(config('apiflash.api_key'), $url);
+        $screenshotResponse = $screenshotRequest->send();
+
+        return $screenshotResponse->json('url');
     }
 }
