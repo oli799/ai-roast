@@ -12,17 +12,9 @@ use Stripe\Stripe;
 
 class PaymentsController extends Controller
 {
-    public function index(): View
+    public function show(Payment $payment): View
     {
-        if (! $token = request('token') ?? false) {
-            abort(404);
-        }
-
-        if (! Payment::query()->where('token', $token)->exists()) {
-            abort(404);
-        }
-
-        return view('success');
+        return view('success', compact('payment'));
     }
 
     public function store(): RedirectResponse
