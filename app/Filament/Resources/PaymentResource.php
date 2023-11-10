@@ -7,7 +7,7 @@ use App\Jobs\CreateRoast;
 use App\Mail\RoastCreated;
 use App\Models\Payment;
 use Exception;
-use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
@@ -24,6 +24,11 @@ class PaymentResource extends Resource
     protected static ?string $model = Payment::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-banknotes';
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
 
     public static function canCreate(): bool
     {
@@ -52,9 +57,10 @@ class PaymentResource extends Resource
                     ->maxLength(255)
                     ->placeholder('https://example.com'),
 
-                RichEditor::make('roast')
+                MarkdownEditor::make('roast')
                     ->required()
-                    ->placeholder('Roast'),
+                    ->placeholder('Roast')
+                    ->columnSpan(2),
             ]);
     }
 
@@ -90,16 +96,41 @@ class PaymentResource extends Resource
                 Action::make('regenerateRoast')
                     ->label('Regenerate Roast')
                     ->icon('heroicon-o-arrow-path')
-                    ->action('regenerateRoast')
-                    ->visible(fn (Payment $payment): bool => empty($payment->email_sent_at))
-                    ->requiresConfirmation(),
+                    ->visible(fn (Payment $payment): bool => empty($payment->email_sent_at) && ! empty($payment->roast))
+                    ->requiresConfirmation()
+                    ->action(function (Payment $payment): void {
+                        $payment->update([
+                            'roast' => null,
+                        ]);
+
+                        CreateRoast::dispatch($payment);
+
+                        Notification::make()
+                            ->title('Starting roast regeneration!')
+                            ->icon('heroicon-o-arrow-path')
+                            ->success()->send();
+                    }),
 
                 Action::make('sendEmail')
                     ->label('Send Email')
                     ->icon('heroicon-o-envelope')
-                    ->action('sendEmail')
                     ->visible(fn (Payment $payment): bool => empty($payment->email_sent_at))
-                    ->requiresConfirmation(),
+                    ->requiresConfirmation()
+                    ->action(function (Payment $payment): void {
+                        try {
+                            Mail::to($payment->email)->send(new RoastCreated($payment));
+
+                            Notification::make()
+                                ->title('Email sent!')
+                                ->icon('heroicon-o-envelope')
+                                ->success()->send();
+                        } catch (Exception) {
+                            Notification::make()
+                                ->title('Error while sending email!')
+                                ->icon('heroicon-o-envelope')
+                                ->danger()->send();
+                        }
+                    }),
                 EditAction::make(),
                 ViewAction::make(),
             ])
@@ -112,33 +143,5 @@ class PaymentResource extends Resource
         return [
             'index' => ManagePayments::route('/'),
         ];
-    }
-
-    public function regenerateRoast(Payment $payment): void
-    {
-        CreateRoast::dispatch($payment);
-
-        Notification::make()
-            ->title('Starting roast regeneration!')
-            ->icon('heroicon-o-arrow-path')
-            ->success();
-
-    }
-
-    public function sendEmail(Payment $payment): void
-    {
-        try {
-            Mail::to($payment->email)->send(new RoastCreated($payment));
-
-            Notification::make()
-                ->title('Email sent!')
-                ->icon('heroicon-o-envelope')
-                ->success();
-        } catch (Exception) {
-            Notification::make()
-                ->title('Error while sending email!')
-                ->icon('heroicon-o-envelope')
-                ->danger();
-        }
     }
 }

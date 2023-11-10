@@ -15,9 +15,13 @@ class CreateRoast extends SoloRequest implements HasBody
 
     protected Method $method = Method::POST;
 
+    /**
+     * @param  array<int,array<string,array<string,string>|string>>  $images
+     */
     public function __construct(
         protected string $apiToken,
-        protected string $imageUrl
+        protected string $prompt,
+        protected array $images,
     ) {
         $this->withTokenAuth($this->apiToken);
     }
@@ -50,9 +54,6 @@ class CreateRoast extends SoloRequest implements HasBody
      */
     protected function defaultBody(): array
     {
-        $prompt = 'You are a fullstack webdeveloper and marketing expert. Create a 100 word constructive feedback in terms of desing, marketing and overall user experience for the following website.';
-        $prompt .= "At the end of the feedback create a 10-20 bullet point list from the suggested imporvements. Explain the top 5 most required imporvements and propose concrete solutions for each with links and specific informations. \n\n";
-
         return [
             'model' => 'gpt-4-vision-preview',
             'max_tokens' => 1000,
@@ -62,14 +63,9 @@ class CreateRoast extends SoloRequest implements HasBody
                     'content' => [
                         [
                             'type' => 'text',
-                            'text' => $prompt,
+                            'text' => $this->prompt,
                         ],
-                        [
-                            'type' => 'image_url',
-                            'image_url' => [
-                                'url' => $this->imageUrl,
-                            ],
-                        ],
+                        ...$this->images,
                     ],
                 ],
             ],

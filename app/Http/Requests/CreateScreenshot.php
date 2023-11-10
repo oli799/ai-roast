@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\DimensionEnum;
 use Saloon\Enums\Method;
 use Saloon\Http\SoloRequest;
 use Saloon\Traits\Plugins\AcceptsJson;
@@ -14,7 +15,8 @@ class CreateScreenshot extends SoloRequest
 
     public function __construct(
         protected string $apiToken,
-        protected string $url
+        protected string $url,
+        protected DimensionEnum $dimension,
     ) {
         $this->withTokenAuth($this->apiToken);
     }
@@ -30,7 +32,7 @@ class CreateScreenshot extends SoloRequest
             'access_key' => $this->apiToken,
             'url' => $this->url,
             'format' => 'webp',
-            'width' => 1920,
+            'width' => $this->dimension->value,
             'full_page' => true,
             'quality' => 75,
             'scroll_page' => true,

@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Enums\DimensionEnum;
 use App\Http\Requests\CreateRoast as CreateRoastRequest;
 use App\Http\Requests\CreateScreenshot;
 use App\Models\Payment;
@@ -41,21 +42,10 @@ class CreateRoast implements ShouldQueue
     public function handle(): void
     {
         try {
-            $prompt = 'You are a designer, marketing and seo expert. Create a 100 word constructive feedback in terms of desing, seo and overall user experience for the following website.';
+            $prompt = $this->getPrompt($this->payment->url);
+            $images = $this->getImagesArray();
 
-            if ($pageDescription = $this->getMetaTagValue($this->payment->url, 'description')) {
-                $prompt .= "The website description is: {$pageDescription}.";
-            }
-
-            if ($pageKeywords = $this->getMetaTagValue($this->payment->url, 'keywords')) {
-                $prompt .= "The website keywords are: {$pageKeywords}.";
-            }
-
-            $prompt .= "At the end of the feedback create a 5-10 bullet point list from the suggested imporvements. Explain the top 5 most required imporvements and propose concrete solutions for each with links and specific informations. \n\n";
-
-            $imageUrl = $this->getScreenshotUrl($this->payment->url);
-
-            $roastRequest = new CreateRoastRequest(config('openai.api_key'), $imageUrl);
+            $roastRequest = new CreateRoastRequest(config('openai.api_key'), $prompt, $images);
             $roastResponse = $roastRequest->send();
 
             $this->payment->update([
@@ -73,7 +63,7 @@ class CreateRoast implements ShouldQueue
                         ->sendToDatabase($admin);
                 }
 
-                Log::error("Roast creation failed for payment {$this->payment->id}.");
+                Log::error("Roast creation failed for payment {$this->payment->id}. Error: ".$th->getMessage());
                 throw $th;
             }
 
@@ -81,6 +71,61 @@ class CreateRoast implements ShouldQueue
 
             return;
         }
+    }
+
+    private function getPrompt(string $url): string
+    {
+        $prompt = 'You are a designer, marketing and seo expert. Create a 100 word constructive feedback in terms of desing, seo and overall user experience for the following website.';
+        $prompt .= "The website is: {$url}.";
+
+        if ($pageDescription = $this->getMetaTagValue($url, 'description')) {
+            $prompt .= "The website meta description is: {$pageDescription}.";
+        }
+
+        if ($pageKeywords = $this->getMetaTagValue($url, 'keywords')) {
+            $prompt .= "The website meta keywords are: {$pageKeywords}.";
+        }
+
+        $prompt .= 'At the end of the feedback create bullet point lists with 3-5 bullet point for each from the suggested imporvements in the following categories: Design, SEO, UX, UI.';
+        $prompt .= 'Explain the top 5 most required imporvements and propose concrete solutions for each with links and specific informations.';
+        $prompt .= 'The first photo is a screenshot of the website on a phone and the second is a screenshot of the website on a computer.';
+
+        return $prompt.'Return the feedback in markdow format.';
+    }
+
+    /**
+     * @return array<int,array<string,array<string,string>|string>>
+     */
+    private function getImagesArray(): array
+    {
+        $images = [];
+        $phoneImageUrl = $this->getScreenshotUrl($this->payment->url, DimensionEnum::PHONE);
+
+        $images[] = [
+            'type' => 'image_url',
+            'image_url' => [
+                'url' => $phoneImageUrl,
+            ],
+        ];
+
+        $computerImageUrl = $this->getScreenshotUrl($this->payment->url, DimensionEnum::COMPUTER);
+
+        $images[] = [
+            'type' => 'image_url',
+            'image_url' => [
+                'url' => $computerImageUrl,
+            ],
+        ];
+
+        return $images;
+    }
+
+    private function getScreenshotUrl(string $url, DimensionEnum $dimension): string
+    {
+        $screenshotRequest = new CreateScreenshot(config('apiflash.api_key'), $url, $dimension);
+        $screenshotResponse = $screenshotRequest->send();
+
+        return $screenshotResponse->json('url');
     }
 
     private function getMetaTagValue(string $url, string $metaTagName): ?string
@@ -113,13 +158,5 @@ class CreateRoast implements ShouldQueue
         }
 
         return $metaTagValue;
-    }
-
-    private function getScreenshotUrl(string $url): string
-    {
-        $screenshotRequest = new CreateScreenshot(config('apiflash.api_key'), $url);
-        $screenshotResponse = $screenshotRequest->send();
-
-        return $screenshotResponse->json('url');
     }
 }

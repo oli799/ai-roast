@@ -17,7 +17,6 @@
     <main class="container mx-auto">
         @yield('content')
     </main>
-
 </body>
 
 </html>

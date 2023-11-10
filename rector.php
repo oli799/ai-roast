@@ -7,7 +7,6 @@ use Rector\CodeQuality\Rector\Identical\FlipTypeControlToUseExclusiveTypeRector;
 use Rector\Config\RectorConfig;
 use Rector\Set\ValueObject\LevelSetList;
 use Rector\Set\ValueObject\SetList;
-use RectorLaravel\Rector\Class_\AnonymousMigrationsRector;
 
 return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->paths([
@@ -21,7 +20,6 @@ return static function (RectorConfig $rectorConfig): void {
 
     $rectorConfig->rules([
         InlineConstructorDefaultToPropertyRector::class,
-        AnonymousMigrationsRector::class,
     ]);
 
     $rectorConfig->skip([
