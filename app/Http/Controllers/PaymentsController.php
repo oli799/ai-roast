@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Payment;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Str;
 use Stripe\Exception\CardException;
 use Stripe\PaymentIntent;
 use Stripe\Stripe;
@@ -14,7 +13,7 @@ class PaymentsController extends Controller
 {
     public function show(Payment $payment): View
     {
-        return view('success', compact('payment'));
+        return view('success', ['payment' => $payment]);
     }
 
     public function store(): RedirectResponse
@@ -39,15 +38,14 @@ class PaymentsController extends Controller
                 'receipt_email' => request()->input('email'),
             ]);
 
-            Payment::query()->create([
+            $payment = Payment::query()->create([
                 'name' => request()->input('name'),
                 'email' => request()->input('email'),
-                'token' => $token = Str::uuid(),
                 'url' => request()->input('url'),
                 'stripe_id' => 'abc',
             ]);
 
-            return redirect('/payments?token='.$token);
+            return redirect()->route('payments.show', ['payment' => $payment]);
         } catch (CardException) {
             return redirect('/')->withErrors([
                 'payment' => 'There was a problem with your payment.',

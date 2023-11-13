@@ -75,22 +75,107 @@ class CreateRoast implements ShouldQueue
 
     private function getPrompt(string $url): string
     {
-        $prompt = 'You are a designer, marketing and seo expert. Create a 100 word constructive feedback in terms of desing, seo and overall user experience for the following website.';
-        $prompt .= "The website is: {$url}.";
+        $prompt = 'You are a designer, marketing and seo expert who revivews the following website:'.PHP_EOL;
+        $prompt .= "The website url is: {$url}.".PHP_EOL;
 
         if ($pageDescription = $this->getMetaTagValue($url, 'description')) {
-            $prompt .= "The website meta description is: {$pageDescription}.";
+            $prompt .= "The website meta description is: {$pageDescription}.".PHP_EOL;
         }
 
         if ($pageKeywords = $this->getMetaTagValue($url, 'keywords')) {
-            $prompt .= "The website meta keywords are: {$pageKeywords}.";
+            $prompt .= "The website meta keywords are: {$pageKeywords}.".PHP_EOL;
         }
 
-        $prompt .= 'At the end of the feedback create bullet point lists with 3-5 bullet point for each from the suggested imporvements in the following categories: Design, SEO, UX, UI.';
-        $prompt .= 'Explain the top 5 most required imporvements and propose concrete solutions for each with links and specific informations.';
-        $prompt .= 'The first photo is a screenshot of the website on a phone and the second is a screenshot of the website on a computer.';
+        $prompt .= 'The first photo is a screenshot of the website on a phone and the second is a screenshot of the website on a computer.'.PHP_EOL;
 
-        return $prompt.'Return the feedback in markdow format.';
+        $prompt .= 'First, please create a one sentence first impression of the website.'.PHP_EOL;
+        $prompt .= 'After the first impresion please, create a 1 sentence feedback and 1 senence advice. In temrs of advice, you can use links and specific examples.'.PHP_EOL;
+        $prompt .= 'In each feedback topick you can use the topic_description key in the response format to get and idea of what the current topic is about.'.PHP_EOL;
+        $prompt .= 'After the feedback please write a final sentence with a conclusion.'.PHP_EOL;
+
+        $responseFormat = [
+            'first_impression' => '',
+            'topics' => [
+                'user_interface' => [
+                    'navigation' => [
+                        'topic_description' => 'Check the navigation menu for clarity and ease of use. Ensure that users can easily find what they\'re looking for.',
+                        'feedback' => '',
+                    ],
+                    'consistency' => [
+                        'topic_description' => 'Look for consistency in design elements such as colors, fonts, and buttons across different pages.',
+                        'feedback' => '',
+                    ],
+                    'responsiveness' => [
+                        'topic_description' => 'Verify that the design is responsive and adapts well to different screen sizes, including mobile devices and tablets.',
+                        'feedback' => '',
+                    ],
+                    'advice' => '',
+                ],
+                'user_experience' => [
+                    'page_layout' => [
+                        'topic_description' => 'Evaluate the overall layout for readability and logical flow. Ensure that important information is prominently displayed.',
+                        'feedback' => '',
+                    ],
+                    'cta' => [
+                        'topic_description' => 'Check the visibility and effectiveness of call-to-action buttons. They should be clear and encourage user interaction.',
+                        'feedback' => '',
+                    ],
+                    'forms' => [
+                        'topic_description' => ' If exists, review forms for simplicity and user-friendliness. Ensure that error messages are helpful.',
+                        'feedback' => '',
+                    ],
+                    'advice' => '',
+                ],
+                'visual_desing' => [
+                    'color_scheme' => [
+                        'topic_description' => 'Assess the color scheme for harmony and readability. Consider the psychological impact of colors on users.',
+                        'feedback' => '',
+                    ],
+                    'typography' => [
+                        'topic_description' => 'Check font styles, sizes, and spacing for readability. Ensure that the text is legible on different devices.',
+                        'feedback' => '',
+                    ],
+                    'images_and_multimedia' => [
+                        'topic_description' => 'Evaluate the quality and relevance of images and multimedia elements. Make sure they enhance the overall design.',
+                        'feedback' => '',
+                    ],
+                    'advice' => '',
+                ],
+                'content' => [
+                    'clarity' => [
+                        'topic_description' => 'Review the clarity and conciseness of the content. Ensure that information is presented in a straightforward manner.',
+                        'feedback' => '',
+                    ],
+                    'relevance' => [
+                        'topic_description' => 'Check if the content aligns with the target audience and the website\'s purpose.',
+                        'feedback' => '',
+                    ],
+                    'readability' => [
+                        'topic_description' => 'Assess the use of headings, subheadings, and paragraphs to improve content readability.',
+                        'feedback' => '',
+                    ],
+                    'advice' => '',
+                ],
+                'seo' => [
+                    'meta_description' => [
+                        'topic_description' => 'Check for appropriate meta titles and descriptions.',
+                        'feedback' => '',
+                    ],
+                    'meta_keywords' => [
+                        'topic_description' => 'Check for appropriate meta keywords.',
+                        'feedback' => '',
+                    ],
+                    'url_structure' => [
+                        'topic_description' => 'Ensure that URLs are SEO-friendly and provide a clear hierarchy.',
+                        'feedback' => '',
+                    ],
+                    'advice' => '',
+                ],
+            ],
+            'final_thoughts' => '',
+        ];
+
+        return $prompt.('Response format: '.json_encode($responseFormat).PHP_EOL);
     }
 
     /**
@@ -101,6 +186,10 @@ class CreateRoast implements ShouldQueue
         $images = [];
         $phoneImageUrl = $this->getScreenshotUrl($this->payment->url, DimensionEnum::PHONE);
 
+        $this->payment->update([
+            'phone_image_url' => $phoneImageUrl,
+        ]);
+
         $images[] = [
             'type' => 'image_url',
             'image_url' => [
@@ -109,6 +198,10 @@ class CreateRoast implements ShouldQueue
         ];
 
         $computerImageUrl = $this->getScreenshotUrl($this->payment->url, DimensionEnum::COMPUTER);
+
+        $this->payment->update([
+            'computer_image_url' => $computerImageUrl,
+        ]);
 
         $images[] = [
             'type' => 'image_url',

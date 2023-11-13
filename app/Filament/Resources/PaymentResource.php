@@ -7,7 +7,7 @@ use App\Jobs\CreateRoast;
 use App\Mail\RoastCreated;
 use App\Models\Payment;
 use Exception;
-use Filament\Forms\Components\MarkdownEditor;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
@@ -39,6 +39,11 @@ class PaymentResource extends Resource
     {
         return $form
             ->schema([
+                TextInput::make('uuid')
+                    ->disabled()
+                    ->autofocus()
+                    ->required(),
+
                 TextInput::make('name')
                     ->autofocus()
                     ->required()
@@ -57,10 +62,23 @@ class PaymentResource extends Resource
                     ->maxLength(255)
                     ->placeholder('https://example.com'),
 
-                MarkdownEditor::make('roast')
+                TextInput::make('computer_image_url')
                     ->required()
-                    ->placeholder('Roast')
-                    ->columnSpan(2),
+                    ->url()
+                    ->maxLength(255)
+                    ->placeholder('https://example.com'),
+
+                TextInput::make('phone_image_url')
+                    ->required()
+                    ->url()
+                    ->maxLength(255)
+                    ->placeholder('https://example.com'),
+
+                Textarea::make('roast')
+                    ->required()
+                    ->columnSpan(2)
+                    ->autosize()
+                    ->json(),
             ]);
     }
 
@@ -68,6 +86,10 @@ class PaymentResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('uuid')
+                    ->searchable()
+                    ->sortable(),
+
                 TextColumn::make('name')
                     ->searchable()
                     ->sortable(),
@@ -77,11 +99,6 @@ class PaymentResource extends Resource
                     ->sortable(),
 
                 TextColumn::make('url')
-                    ->searchable()
-                    ->sortable(),
-
-                TextColumn::make('roast')
-                    ->limit(50)
                     ->searchable()
                     ->sortable(),
 

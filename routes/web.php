@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
  */
+
 Route::get('/', HomeController::class);
 Route::post('/payments', (new PaymentsController())->store(...))->name('payments.store');
-Route::get('/payments/{payment:token}', (new PaymentsController())->show(...))->name('payments.show');
+Route::get('/payments/{payment:uuid}', (new PaymentsController())->show(...))->name('payments.show');
