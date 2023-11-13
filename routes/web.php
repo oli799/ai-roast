@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PaymentsController;
+use App\Models\Payment;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,6 +16,15 @@ use Illuminate\Support\Facades\Route;
 |
  */
 
+Route::get('/test', function () {
+    Payment::query()->create([
+        'name' => 'Test',
+        'email' => 'test@test.com',
+        'stripe_id' => 'test',
+        'url' => 'https://fdbck.io',
+    ]);
+});
+
 Route::get('/', HomeController::class);
 Route::post('/payments', (new PaymentsController())->store(...))->name('payments.store');
-Route::get('/payments/{payment:uuid}', (new PaymentsController())->show(...))->name('payments.show');
+Route::get('/roasts/{payment:uuid}', (new PaymentsController())->show(...))->name('payments.show');

@@ -80,94 +80,128 @@ class CreateRoast implements ShouldQueue
 
         if ($pageDescription = $this->getMetaTagValue($url, 'description')) {
             $prompt .= "The website meta description is: {$pageDescription}.".PHP_EOL;
+        } else {
+            $prompt .= 'The website meta description is missing.';
         }
 
         if ($pageKeywords = $this->getMetaTagValue($url, 'keywords')) {
             $prompt .= "The website meta keywords are: {$pageKeywords}.".PHP_EOL;
+        } else {
+            $prompt .= 'The website meta keywords are missing.';
         }
 
         $prompt .= 'The first photo is a screenshot of the website on a phone and the second is a screenshot of the website on a computer.'.PHP_EOL;
 
         $prompt .= 'First, please create a one sentence first impression of the website.'.PHP_EOL;
         $prompt .= 'After the first impresion please, create a 1 sentence feedback and 1 senence advice. In temrs of advice, you can use links and specific examples.'.PHP_EOL;
-        $prompt .= 'In each feedback topick you can use the topic_description key in the response format to get and idea of what the current topic is about.'.PHP_EOL;
+        $prompt .= 'In each feedback topick you can use the subtopic_description key in the response format to get and idea of what the current subtopic is about.'.PHP_EOL;
         $prompt .= 'After the feedback please write a final sentence with a conclusion.'.PHP_EOL;
 
         $responseFormat = [
             'first_impression' => '',
             'topics' => [
-                'user_interface' => [
-                    'navigation' => [
-                        'topic_description' => 'Check the navigation menu for clarity and ease of use. Ensure that users can easily find what they\'re looking for.',
-                        'feedback' => '',
-                    ],
-                    'consistency' => [
-                        'topic_description' => 'Look for consistency in design elements such as colors, fonts, and buttons across different pages.',
-                        'feedback' => '',
-                    ],
-                    'responsiveness' => [
-                        'topic_description' => 'Verify that the design is responsive and adapts well to different screen sizes, including mobile devices and tablets.',
-                        'feedback' => '',
-                    ],
-                    'advice' => '',
-                ],
-                'user_experience' => [
-                    'page_layout' => [
-                        'topic_description' => 'Evaluate the overall layout for readability and logical flow. Ensure that important information is prominently displayed.',
-                        'feedback' => '',
-                    ],
-                    'cta' => [
-                        'topic_description' => 'Check the visibility and effectiveness of call-to-action buttons. They should be clear and encourage user interaction.',
-                        'feedback' => '',
-                    ],
-                    'forms' => [
-                        'topic_description' => ' If exists, review forms for simplicity and user-friendliness. Ensure that error messages are helpful.',
-                        'feedback' => '',
+                [
+                    'topic_name' => 'user_interface',
+                    'subtopics' => [
+                        [
+                            'subtopic_description' => 'Check the navigation menu for clarity and ease of use. Ensure that users can easily find what they\'re looking for.',
+                            'subtopic_name' => 'navigation',
+                            'feedback' => '',
+                        ],
+                        [
+                            'subtopic_description' => 'Look for consistency in design elements such as colors, fonts, and buttons across different pages.',
+                            'subtopic_name' => 'consistency',
+                            'feedback' => '',
+                        ],
+                        [
+                            'subtopic_description' => 'Verify that the design is responsive and adapts well to different screen sizes, including mobile devices and tablets.',
+                            'subtopic_name' => 'responsiveness',
+                            'feedback' => '',
+                        ],
                     ],
                     'advice' => '',
                 ],
-                'visual_desing' => [
-                    'color_scheme' => [
-                        'topic_description' => 'Assess the color scheme for harmony and readability. Consider the psychological impact of colors on users.',
-                        'feedback' => '',
-                    ],
-                    'typography' => [
-                        'topic_description' => 'Check font styles, sizes, and spacing for readability. Ensure that the text is legible on different devices.',
-                        'feedback' => '',
-                    ],
-                    'images_and_multimedia' => [
-                        'topic_description' => 'Evaluate the quality and relevance of images and multimedia elements. Make sure they enhance the overall design.',
-                        'feedback' => '',
-                    ],
-                    'advice' => '',
-                ],
-                'content' => [
-                    'clarity' => [
-                        'topic_description' => 'Review the clarity and conciseness of the content. Ensure that information is presented in a straightforward manner.',
-                        'feedback' => '',
-                    ],
-                    'relevance' => [
-                        'topic_description' => 'Check if the content aligns with the target audience and the website\'s purpose.',
-                        'feedback' => '',
-                    ],
-                    'readability' => [
-                        'topic_description' => 'Assess the use of headings, subheadings, and paragraphs to improve content readability.',
-                        'feedback' => '',
+                [
+                    'topic_name' => 'user_experience',
+                    'subtopics' => [
+                        [
+                            'subtopic_description' => 'Evaluate the overall layout for readability and logical flow. Ensure that important information is prominently displayed.',
+                            'subtopic_name' => 'page_layout',
+                            'feedback' => '',
+                        ],
+                        [
+                            'subtopic_description' => 'Check the visibility and effectiveness of call-to-action buttons. They should be clear and encourage user interaction.',
+                            'subtopic_name' => 'cta',
+                            'feedback' => '',
+                        ],
+                        [
+                            'subtopic_description' => ' If exists, review forms for simplicity and user-friendliness. Ensure that error messages are helpful.',
+                            'subtopic_name' => 'forms',
+                            'feedback' => '',
+                        ],
                     ],
                     'advice' => '',
                 ],
-                'seo' => [
-                    'meta_description' => [
-                        'topic_description' => 'Check for appropriate meta titles and descriptions.',
-                        'feedback' => '',
+                [
+                    'topic_name' => 'visual_desing',
+                    'subtopics' => [
+                        [
+                            'subtopic_description' => 'Assess the color scheme for harmony and readability. Consider the psychological impact of colors on users.',
+                            'subtopic_name' => 'color_scheme',
+                            'feedback' => '',
+                        ],
+                        [
+                            'subtopic_description' => 'Check font styles, sizes, and spacing for readability. Ensure that the text is legible on different devices.',
+                            'subtopic_name' => 'typography',
+                            'feedback' => '',
+                        ],
+                        [
+                            'subtopic_description' => 'Evaluate the quality and relevance of images and multimedia elements. Make sure they enhance the overall design.',
+                            'subtopic_name' => 'images_and_multimedia',
+                            'feedback' => '',
+                        ],
                     ],
-                    'meta_keywords' => [
-                        'topic_description' => 'Check for appropriate meta keywords.',
-                        'feedback' => '',
+                    'advice' => '',
+                ],
+                [
+                    'topic_name' => 'content',
+                    'subtopics' => [
+                        [
+                            'subtopic_description' => 'Review the clarity and conciseness of the content. Ensure that information is presented in a straightforward manner.',
+                            'subtopic_name' => 'clarity',
+                            'feedback' => '',
+                        ],
+                        [
+                            'subtopic_description' => 'Check if the content aligns with the target audience and the website\'s purpose.',
+                            'subtopic_name' => 'relevance',
+                            'feedback' => '',
+                        ],
+                        [
+                            'subtopic_description' => 'Assess the use of headings, subheadings, and paragraphs to improve content readability.',
+                            'subtopic_name' => 'readability',
+                            'feedback' => '',
+                        ],
                     ],
-                    'url_structure' => [
-                        'topic_description' => 'Ensure that URLs are SEO-friendly and provide a clear hierarchy.',
-                        'feedback' => '',
+                    'advice' => '',
+                ],
+                [
+                    'topic_name' => 'seo',
+                    'subtopics' => [
+                        [
+                            'subtopic_description' => 'Check for appropriate meta titles and descriptions.',
+                            'subtopic_name' => 'meta_description',
+                            'feedback' => '',
+                        ],
+                        [
+                            'subtopic_description' => 'Check for appropriate meta keywords.',
+                            'subtopic_name' => 'meta_keywords',
+                            'feedback' => '',
+                        ],
+                        [
+                            'subtopic_description' => 'Ensure that URLs are SEO-friendly and provide a clear hierarchy.',
+                            'subtopic_name' => 'url_structure',
+                            'feedback' => '',
+                        ],
                     ],
                     'advice' => '',
                 ],

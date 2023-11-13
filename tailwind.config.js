@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+const defaultTheme = require("tailwindcss/defaultTheme");
 module.exports = {
     darkMode: 'class',
     content: [
@@ -8,10 +9,10 @@ module.exports = {
     ],
     theme: {
         extend: {
-            lineHeight: {
-                squished: "0.8",
+            fontFamily: {
+            sans: ["Inter", ...defaultTheme.fontFamily.sans],
             },
         },
     },
-    plugins: [],
+    plugins: [require("@tailwindcss/typography")],
 };
