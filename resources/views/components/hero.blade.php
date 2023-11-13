@@ -29,7 +29,7 @@
                     @endif
                 </div>
                 <div class="mb-5">
-                    <input type="url" placeholder="Website Page URL" name="url"
+                    <input type="url" placeholder="Website URL" name="url"
                         class="w-full px-4 py-2 border-2 rounded-md outline-none focus:ring-4 border-gray-300 focus:border-gray-600 ring-gray-100">
                     @if($errors->has('url'))
                     <p class="text-sm text-red-500 mt-1">{{$errors->first('url')}}</p>
@@ -45,7 +45,7 @@
 
                 <button
                     class="bg-black p-3 w-full rounded-md text-white font-bold enabled:hover:bg-gray-600 transition-all duration-300 disabled:opacity-50 ">
-                    Roast my landing page ({{ config('stripe.charge_amount') }}$) 🔥
+                    Roast my landing page ({{ config('stripe.charge_amount') }}$)
                 </button>
             </form>
         </div>

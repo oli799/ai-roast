@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Payment;
 use Illuminate\Contracts\View\View;
 
 class HomeController extends Controller
@@ -11,6 +12,8 @@ class HomeController extends Controller
      */
     public function __invoke(): View
     {
-        return view('home');
+        $payments = Payment::query()->get();
+
+        return view('home', compact('payments'));
     }
 }

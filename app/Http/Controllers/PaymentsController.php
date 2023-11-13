@@ -13,7 +13,7 @@ class PaymentsController extends Controller
 {
     public function show(Payment $payment): View
     {
-        return view('success', ['payment' => $payment]);
+        return view('payments.show', ['payment' => $payment]);
     }
 
     public function store(): RedirectResponse

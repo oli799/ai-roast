@@ -7,7 +7,7 @@
 @section('content')
 <div class="max-w-screen-xl mx-auto px-5">
     <x-hero />
-    <x-features />
+    <x-features :payments="$payments" />
     <x-cta />
 </div>
 @endsection
