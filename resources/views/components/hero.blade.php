@@ -1,15 +1,13 @@
 <main class="grid lg:grid-cols-2 place-items-center pt-16 pb-16 md:pt-8">
     <div class="py-6 md:order-1 hidden md:block">
-        <img src="{{asset('images/hero.png')}}" alt="hero image" />
+        <img src="{{asset('images/hero.svg')}}" alt="hero image" />
     </div>
     <div>
         <h1 class="text-5xl lg:text-6xl xl:text-7xl font-bold lg:tracking-tight">
-            Marketing website done with Astro
+            Tailored Roasts for your Landing Page with the help of AI
         </h1>
         <p class="text-lg mt-4 text-slate-600 max-w-xl">
-            Astroship is a starter template for startups, marketing websites & landing
-            pages.<wbr /> Built with Astro.build, TailwindCSS & Alpine.js. You can quickly
-        create any website with this starter.
+            We roast your landing page to help you improve conversion, SEO and overall user experience.
         </p>
         <div class="mt-6 flex flex-col sm:flex-row gap-3">
             <form id="payment-form" class="w-full lg:w-2/3" action="{{route('payments.store')}}" method="post">
@@ -19,13 +17,6 @@
                         class="w-full px-4 py-2 border-2 rounded-md outline-none focus:ring-4 border-gray-300 focus:border-gray-600 ring-gray-100">
                     @if($errors->has('name'))
                     <p class="text-sm text-red-500 mt-1">{{$errors->first('name')}}</p>
-                    @endif
-                </div>
-                <div class="mb-5">
-                    <input type="email" placeholder="Email" name="email"
-                        class="w-full px-4 py-2 border-2 rounded-md outline-none focus:ring-4 border-gray-300 focus:border-gray-600 ring-gray-100">
-                    @if($errors->has('email'))
-                    <p class="text-sm text-red-500 mt-1">{{$errors->first('email')}}</p>
                     @endif
                 </div>
                 <div class="mb-5">
