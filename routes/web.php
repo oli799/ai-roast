@@ -25,6 +25,6 @@ Route::get('/test', function () {
     ]);
 });
 
-Route::get('/', HomeController::class);
+Route::get('/', HomeController::class)->name('home');
 Route::post('/payments', (new PaymentsController())->store(...))->name('payments.store');
 Route::get('/roasts/{payment:uuid}', (new PaymentsController())->show(...))->name('payments.show');
