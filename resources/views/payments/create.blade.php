@@ -15,6 +15,8 @@
     <div class="card bg-base-200 max-w-xl mx-auto mb-8 md:mb-12">
         <div class="card-body">
             <form method="POST" action="{{route('payments.create')}}" id="payment-form">
+                @csrf
+
                 <x-input name="name" />
 
                 <x-input name="email" type="email" />

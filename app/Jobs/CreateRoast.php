@@ -16,6 +16,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Throwable;
 
 class CreateRoast implements ShouldQueue
@@ -220,9 +221,19 @@ class CreateRoast implements ShouldQueue
         $images = [];
         $phoneImageUrl = $this->getScreenshotUrl($this->payment->url, DimensionEnum::PHONE);
 
-        $this->payment->update([
-            'phone_image_url' => $phoneImageUrl,
-        ]);
+        if ($rawPhoneImage = file_get_contents($phoneImageUrl)) {
+            Storage::disk('public')->put("images/{$this->payment->id}/phone.png", $rawPhoneImage);
+
+            $this->payment->update([
+                'phone_image_url' => Storage::disk('public')->url("images/{$this->payment->id}/phone.png"),
+            ]);
+        } else {
+            Log::error("Failed to get open {$phoneImageUrl}.");
+
+            $this->payment->update([
+                'phone_image_url' => $phoneImageUrl,
+            ]);
+        }
 
         $images[] = [
             'type' => 'image_url',
@@ -233,9 +244,19 @@ class CreateRoast implements ShouldQueue
 
         $computerImageUrl = $this->getScreenshotUrl($this->payment->url, DimensionEnum::COMPUTER);
 
-        $this->payment->update([
-            'computer_image_url' => $computerImageUrl,
-        ]);
+        if ($rawComputerImage = file_get_contents($computerImageUrl)) {
+            Storage::disk('public')->put("images/{$this->payment->id}/computer.png", $rawComputerImage);
+
+            $this->payment->update([
+                'computer_image_url' => Storage::disk('public')->url("images/{$this->payment->id}/computer.png"),
+            ]);
+        } else {
+            Log::error("Failed to get open {$computerImageUrl}.");
+
+            $this->payment->update([
+                'computer_image_url' => $computerImageUrl,
+            ]);
+        }
 
         $images[] = [
             'type' => 'image_url',

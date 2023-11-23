@@ -47,56 +47,15 @@
             Cupiditate, impedit.</p>
     </div>
     <div class="grid md:grid-cols-3 gap-5">
-        <div class="mockup-browser bg-base-200 cursor-pointer hover:opacity-30 transition-all duration-300">
+        @foreach ($payments as $payment)
+        <a href="{{route('payments.show', $payment)}}"
+            class="mockup-browser bg-base-200 cursor-pointer hover:opacity-30 transition-all duration-300">
             <div class="mockup-browser-toolbar">
-                <div class="input">https://daisyui.com</div>
+                <div class="input">{{$payment->url}}</div>
             </div>
-            <img class="object-cover"
-                src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png">
-        </div>
-
-        <div class="mockup-browser bg-base-200 cursor-pointer hover:opacity-30 transition-all duration-300">
-            <div class="mockup-browser-toolbar">
-                <div class="input">https://daisyui.com</div>
-            </div>
-
-            <img class="object-cover"
-                src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png">
-        </div>
-
-        <div class="mockup-browser bg-base-200 cursor-pointer hover:opacity-30 transition-all duration-300">
-            <div class="mockup-browser-toolbar">
-                <div class="input">https://daisyui.com</div>
-            </div>
-
-            <img class="object-cover"
-                src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png">
-        </div>
-
-        <div class="mockup-browser bg-base-200 cursor-pointer hover:opacity-30 transition-all duration-300">
-            <div class="mockup-browser-toolbar">
-                <div class="input">https://daisyui.com</div>
-            </div>
-
-            <img class="object-cover"
-                src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png">
-        </div>
-        <div class="mockup-browser bg-base-200 cursor-pointer hover:opacity-30 transition-all duration-300">
-            <div class="mockup-browser-toolbar">
-                <div class="input">https://daisyui.com</div>
-            </div>
-
-            <img class="object-cover"
-                src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png">
-        </div>
-        <div class="mockup-browser bg-base-200 cursor-pointer hover:opacity-30 transition-all duration-300">
-            <div class="mockup-browser-toolbar">
-                <div class="input">https://daisyui.com</div>
-            </div>
-
-            <img class="object-cover"
-                src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png">
-        </div>
+            <img class="max-h-72 object-cover w-full object-top" src="{{$payment->computer_image_url}}">
+        </a>
+        @endforeach
     </div>
 </section>
 

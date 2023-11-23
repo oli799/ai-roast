@@ -40,11 +40,13 @@ class PaymentsController extends Controller
                 'description' => 'Ai website roast',
                 'metadata' => ['integration_check' => 'accept_a_payment'],
                 'confirm' => true,
+                'receipt_email' => request()->input('email'),
             ]);
 
             $payment = Payment::query()->create([
                 'name' => request()->input('name'),
                 'url' => request()->input('url'),
+                'email' => request()->input('email'),
                 'stripe_id' => 'abc',
             ]);
 
