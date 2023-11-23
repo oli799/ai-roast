@@ -32,7 +32,7 @@
 
             <div class="flex-none">
                 <label class="swap swap-rotate btn btn-square btn-ghost">
-                    <input type="checkbox" data-toggle-theme="bumblebee,dark" />
+                    <input type="checkbox" data-toggle-theme="bumblebee,forest" />
 
                     <svg class="swap-on fill-current w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                         <path

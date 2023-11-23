@@ -16,5 +16,6 @@ use Illuminate\Support\Facades\Route;
  */
 
 Route::get('/', HomeController::class)->name('home');
-Route::post('/payments', (new PaymentsController())->store(...))->name('payments.store');
+Route::get('/payment', (new PaymentsController())->create(...))->name('payments.create');
+Route::post('/payment', (new PaymentsController())->store(...))->name('payments.store');
 Route::get('/roasts/{payment:uuid}', (new PaymentsController())->show(...))->name('payments.show');

@@ -14,6 +14,6 @@ class HomeController extends Controller
     {
         $payments = Payment::query()->get();
 
-        return view('home', compact('payments'));
+        return view('home', ['payments' => $payments]);
     }
 }

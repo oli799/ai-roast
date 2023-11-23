@@ -12,8 +12,12 @@
             <span>Big headline</span>
             <br>
             <span class="inline-grid">
-                <span class="pointer-events-none col-start-1 row-start-1 bg-[linear-gradient(90deg,theme(colors.error)_0%,theme(colors.secondary)_9%,theme(colors.secondary)_42%,theme(colors.primary)_47%,theme(colors.accent)_100%)] bg-clip-text blur-2xl [-webkit-text-fill-color:transparent] [transform:translate3d(0,0,0)] [@supports(color:oklch(0_0_0))]:bg-[linear-gradient(90deg,oklch(var(--s))_4%,color-mix(in_oklch,oklch(var(--s)),oklch(var(--er)))_22%,oklch(var(--p))_45%,color-mix(in_oklch,oklch(var(--p)),oklch(var(--a)))_67%,oklch(var(--a))_100.2%)]" aria-hidden="true">component library</span>
-                <span class="[&amp;::selection]:text-base-content relative col-start-1 row-start-1 bg-[linear-gradient(90deg,theme(colors.error)_0%,theme(colors.secondary)_9%,theme(colors.secondary)_42%,theme(colors.primary)_47%,theme(colors.accent)_100%)] bg-clip-text [-webkit-text-fill-color:transparent] [&amp;::selection]:bg-blue-700/20 [@supports(color:oklch(0_0_0))]:bg-[linear-gradient(90deg,oklch(var(--s))_4%,color-mix(in_oklch,oklch(var(--s)),oklch(var(--er)))_22%,oklch(var(--p))_45%,color-mix(in_oklch,oklch(var(--p)),oklch(var(--a)))_67%,oklch(var(--a))_100.2%)]">component library</span>
+                <span
+                    class="pointer-events-none col-start-1 row-start-1 bg-[linear-gradient(90deg,theme(colors.error)_0%,theme(colors.secondary)_9%,theme(colors.secondary)_42%,theme(colors.primary)_47%,theme(colors.accent)_100%)] bg-clip-text blur-2xl [-webkit-text-fill-color:transparent] [transform:translate3d(0,0,0)] [@supports(color:oklch(0_0_0))]:bg-[linear-gradient(90deg,oklch(var(--s))_4%,color-mix(in_oklch,oklch(var(--s)),oklch(var(--er)))_22%,oklch(var(--p))_45%,color-mix(in_oklch,oklch(var(--p)),oklch(var(--a)))_67%,oklch(var(--a))_100.2%)]"
+                    aria-hidden="true">component library</span>
+                <span
+                    class="[&amp;::selection]:text-base-content relative col-start-1 row-start-1 bg-[linear-gradient(90deg,theme(colors.error)_0%,theme(colors.secondary)_9%,theme(colors.secondary)_42%,theme(colors.primary)_47%,theme(colors.accent)_100%)] bg-clip-text [-webkit-text-fill-color:transparent] [&amp;::selection]:bg-blue-700/20 [@supports(color:oklch(0_0_0))]:bg-[linear-gradient(90deg,oklch(var(--s))_4%,color-mix(in_oklch,oklch(var(--s)),oklch(var(--er)))_22%,oklch(var(--p))_45%,color-mix(in_oklch,oklch(var(--p)),oklch(var(--a)))_67%,oklch(var(--a))_100.2%)]">component
+                    library</span>
             </span>
             <br>
             <span>asd</span>
@@ -23,7 +27,7 @@
             asd
         </p>
         <div class="inline-flex flex-col justify-center items-center my-5 gap-2">
-            <a class="btn btn-primary btn-wide">CTA button</a>
+            <a href="{{route('payments.create')}}" class="btn btn-primary btn-wide">CTA button</a>
             <a onclick="document.getElementById('faq').scrollIntoView({ behavior: 'smooth', block: 'end' ,
                 inline: 'nearest' })" class="btn btn-ghost btn-wide">How it
                 works?</a>
@@ -47,7 +51,8 @@
             <div class="mockup-browser-toolbar">
                 <div class="input">https://daisyui.com</div>
             </div>
-            <img class="object-cover" src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png">
+            <img class="object-cover"
+                src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png">
         </div>
 
         <div class="mockup-browser bg-base-200 cursor-pointer hover:opacity-30 transition-all duration-300">
@@ -55,7 +60,8 @@
                 <div class="input">https://daisyui.com</div>
             </div>
 
-            <img class="object-cover" src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png">
+            <img class="object-cover"
+                src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png">
         </div>
 
         <div class="mockup-browser bg-base-200 cursor-pointer hover:opacity-30 transition-all duration-300">
@@ -63,7 +69,8 @@
                 <div class="input">https://daisyui.com</div>
             </div>
 
-            <img class="object-cover" src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png">
+            <img class="object-cover"
+                src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png">
         </div>
 
         <div class="mockup-browser bg-base-200 cursor-pointer hover:opacity-30 transition-all duration-300">
@@ -71,21 +78,24 @@
                 <div class="input">https://daisyui.com</div>
             </div>
 
-            <img class="object-cover" src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png">
+            <img class="object-cover"
+                src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png">
         </div>
         <div class="mockup-browser bg-base-200 cursor-pointer hover:opacity-30 transition-all duration-300">
             <div class="mockup-browser-toolbar">
                 <div class="input">https://daisyui.com</div>
             </div>
 
-            <img class="object-cover" src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png">
+            <img class="object-cover"
+                src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png">
         </div>
         <div class="mockup-browser bg-base-200 cursor-pointer hover:opacity-30 transition-all duration-300">
             <div class="mockup-browser-toolbar">
                 <div class="input">https://daisyui.com</div>
             </div>
 
-            <img class="object-cover" src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png">
+            <img class="object-cover"
+                src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png">
         </div>
     </div>
 </section>

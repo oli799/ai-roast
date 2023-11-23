@@ -17,8 +17,14 @@ module.exports = {
 
     daisyui: {
         themes: [
-            "bumblebee",
-            "dark",
+            {
+                bumblebee: {
+                    ...require("daisyui/src/theming/themes")["bumblebee"],
+                    "base-100": "#f2f2f2",
+                    "base-200": "#ffffff",
+                  },
+            },
+            "forest",
         ],
     },
 

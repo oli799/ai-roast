@@ -16,6 +16,11 @@ class PaymentsController extends Controller
         return view('payments.show', ['payment' => $payment]);
     }
 
+    public function create(): View
+    {
+        return view('payments.create');
+    }
+
     public function store(): RedirectResponse
     {
         Stripe::setApiKey(config('stripe.secret'));
