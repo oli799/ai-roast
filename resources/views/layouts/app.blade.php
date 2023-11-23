@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-theme="light">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-theme="bumblebee">
 
 <head>
     <meta charset="utf-8">
@@ -13,7 +13,7 @@
 
 <body>
     <header class="w-full my-4 px-4 md:pt-4">
-        <div class="navbar justify-between bg-base-300 text-base-content rounded-box w-full max-w-xl mx-auto">
+        <div class="navbar justify-between bg-base-200 text-base-content rounded-box w-full max-w-xl mx-auto">
             <div class="flex-none">
                 <a href="{{route('home')}}" class="btn btn-square btn-ghost" area-label="Go to homepage">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -32,7 +32,7 @@
 
             <div class="flex-none">
                 <label class="swap swap-rotate btn btn-square btn-ghost">
-                    <input type="checkbox" data-toggle-theme="light,dark" />
+                    <input type="checkbox" data-toggle-theme="bumblebee,dark" />
 
                     <svg class="swap-on fill-current w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                         <path
@@ -51,7 +51,7 @@
         @yield('content')
     </main>
 
-    <footer class="footer footer-center p-4 bg-base-300 text-base-content mt-12 md:mt-24">
+    <footer class="footer footer-center p-4 bg-base-200 text-base-content mt-12 md:mt-24">
         <aside>
             <p>Copyright © {{date('Y')}} - All right reserved by {{config('app.name')}}</p>
         </aside>

@@ -9,8 +9,14 @@
     class="pt-4 pb-12 md:pt-24 md:pb-12 md:mb-12 flex flex-col md:flex-row justify-center items-center md:items-start space-y-20 md:space-y-0 md:space-x-6 lg:space-x-12 text-center md:text-left">
     <div class="w-full md:w-7/12 md:mr-8">
         <h1 class="text-5xl lg:text-6xl font-extrabold tracking-tight mb-6">
-            Big headline
-            <span class="text-primary whitespace-nowrap">with color text.</span>
+            <span>Big headline</span>
+            <br>
+            <span class="inline-grid">
+                <span class="pointer-events-none col-start-1 row-start-1 bg-[linear-gradient(90deg,theme(colors.error)_0%,theme(colors.secondary)_9%,theme(colors.secondary)_42%,theme(colors.primary)_47%,theme(colors.accent)_100%)] bg-clip-text blur-2xl [-webkit-text-fill-color:transparent] [transform:translate3d(0,0,0)] [@supports(color:oklch(0_0_0))]:bg-[linear-gradient(90deg,oklch(var(--s))_4%,color-mix(in_oklch,oklch(var(--s)),oklch(var(--er)))_22%,oklch(var(--p))_45%,color-mix(in_oklch,oklch(var(--p)),oklch(var(--a)))_67%,oklch(var(--a))_100.2%)]" aria-hidden="true">component library</span>
+                <span class="[&amp;::selection]:text-base-content relative col-start-1 row-start-1 bg-[linear-gradient(90deg,theme(colors.error)_0%,theme(colors.secondary)_9%,theme(colors.secondary)_42%,theme(colors.primary)_47%,theme(colors.accent)_100%)] bg-clip-text [-webkit-text-fill-color:transparent] [&amp;::selection]:bg-blue-700/20 [@supports(color:oklch(0_0_0))]:bg-[linear-gradient(90deg,oklch(var(--s))_4%,color-mix(in_oklch,oklch(var(--s)),oklch(var(--er)))_22%,oklch(var(--p))_45%,color-mix(in_oklch,oklch(var(--p)),oklch(var(--a)))_67%,oklch(var(--a))_100.2%)]">component library</span>
+            </span>
+            <br>
+            <span>asd</span>
         </h1>
         <p class="mb-4 text-lg opacity-90">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.
@@ -37,49 +43,49 @@
             Cupiditate, impedit.</p>
     </div>
     <div class="grid md:grid-cols-3 gap-5">
-        <div class="mockup-browser bg-base-300 cursor-pointer hover:opacity-30 transition-all duration-300">
+        <div class="mockup-browser bg-base-200 cursor-pointer hover:opacity-30 transition-all duration-300">
             <div class="mockup-browser-toolbar">
                 <div class="input">https://daisyui.com</div>
             </div>
-            <img class="object-cover" src="https://hinicio.com/wp-content/uploads/2022/08/placeholder-3.png">
+            <img class="object-cover" src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png">
         </div>
 
-        <div class="mockup-browser bg-base-300 cursor-pointer hover:opacity-30 transition-all duration-300">
+        <div class="mockup-browser bg-base-200 cursor-pointer hover:opacity-30 transition-all duration-300">
             <div class="mockup-browser-toolbar">
                 <div class="input">https://daisyui.com</div>
             </div>
 
-            <img class="object-cover" src="https://hinicio.com/wp-content/uploads/2022/08/placeholder-3.png">
+            <img class="object-cover" src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png">
         </div>
 
-        <div class="mockup-browser bg-base-300 cursor-pointer hover:opacity-30 transition-all duration-300">
+        <div class="mockup-browser bg-base-200 cursor-pointer hover:opacity-30 transition-all duration-300">
             <div class="mockup-browser-toolbar">
                 <div class="input">https://daisyui.com</div>
             </div>
 
-            <img class="object-cover" src="https://hinicio.com/wp-content/uploads/2022/08/placeholder-3.png">
+            <img class="object-cover" src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png">
         </div>
 
-        <div class="mockup-browser bg-base-300 cursor-pointer hover:opacity-30 transition-all duration-300">
+        <div class="mockup-browser bg-base-200 cursor-pointer hover:opacity-30 transition-all duration-300">
             <div class="mockup-browser-toolbar">
                 <div class="input">https://daisyui.com</div>
             </div>
 
-            <img class="object-cover" src="https://hinicio.com/wp-content/uploads/2022/08/placeholder-3.png">
+            <img class="object-cover" src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png">
         </div>
-        <div class="mockup-browser bg-base-300 cursor-pointer hover:opacity-30 transition-all duration-300">
+        <div class="mockup-browser bg-base-200 cursor-pointer hover:opacity-30 transition-all duration-300">
             <div class="mockup-browser-toolbar">
                 <div class="input">https://daisyui.com</div>
             </div>
 
-            <img class="object-cover" src="https://hinicio.com/wp-content/uploads/2022/08/placeholder-3.png">
+            <img class="object-cover" src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png">
         </div>
-        <div class="mockup-browser bg-base-300 cursor-pointer hover:opacity-30 transition-all duration-300">
+        <div class="mockup-browser bg-base-200 cursor-pointer hover:opacity-30 transition-all duration-300">
             <div class="mockup-browser-toolbar">
                 <div class="input">https://daisyui.com</div>
             </div>
 
-            <img class="object-cover" src="https://hinicio.com/wp-content/uploads/2022/08/placeholder-3.png">
+            <img class="object-cover" src="https://developers.elementor.com/docs/assets/img/elementor-placeholder-image.png">
         </div>
     </div>
 </section>
