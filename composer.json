@@ -11,8 +11,7 @@
         "laravel/framework": "^10.8",
         "laravel/horizon": "^5.21",
         "predis/predis": "^2.2",
-        "saloonphp/saloon": "^3.0",
-        "stripe/stripe-php": "^10.12"
+        "saloonphp/saloon": "^3.0"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.13",

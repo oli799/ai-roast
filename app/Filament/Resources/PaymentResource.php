@@ -7,8 +7,10 @@ use App\Jobs\CreateRoast;
 use App\Mail\RoastCreated;
 use App\Models\Payment;
 use Exception;
+use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
@@ -39,6 +41,14 @@ class PaymentResource extends Resource
     {
         return $form
             ->schema([
+                Toggle::make('parseable')
+                    ->required()
+                    ->default(false),
+
+                DateTimePicker::make('paid_at')
+                    ->nullable()
+                    ->native(false),
+
                 TextInput::make('uuid')
                     ->disabled()
                     ->autofocus()
@@ -102,6 +112,22 @@ class PaymentResource extends Resource
                     ->searchable()
                     ->sortable(),
 
+                TextColumn::make('parseable')
+                    ->searchable()
+                    ->sortable(),
+
+                TextColumn::make('paid_at')
+                    ->searchable()
+                    ->sortable(),
+
+                TextColumn::make('parse_started')
+                    ->searchable()
+                    ->sortable(),
+
+                TextColumn::make('parsed_at')
+                    ->searchable()
+                    ->sortable(),
+
                 TextColumn::make('email_sent_at')
                     ->searchable()
                     ->sortable(),
@@ -110,24 +136,6 @@ class PaymentResource extends Resource
 
             ])
             ->actions([
-                Action::make('regenerateRoast')
-                    ->label('Regenerate Roast')
-                    ->icon('heroicon-o-arrow-path')
-                    ->visible(fn (Payment $payment): bool => empty($payment->email_sent_at) && ! empty($payment->roast))
-                    ->requiresConfirmation()
-                    ->action(function (Payment $payment): void {
-                        $payment->update([
-                            'roast' => null,
-                        ]);
-
-                        CreateRoast::dispatch($payment);
-
-                        Notification::make()
-                            ->title('Starting roast regeneration!')
-                            ->icon('heroicon-o-arrow-path')
-                            ->success()->send();
-                    }),
-
                 Action::make('sendEmail')
                     ->label('Send Email')
                     ->icon('heroicon-o-envelope')
@@ -147,6 +155,26 @@ class PaymentResource extends Resource
                                 ->icon('heroicon-o-envelope')
                                 ->danger()->send();
                         }
+                    }),
+
+                Action::make('regenerateRoast')
+                    ->label('Regenerate Roast')
+                    ->icon('heroicon-o-arrow-path')
+                    ->visible(fn (Payment $payment): bool => empty($payment->email_sent_at) && ! empty($payment->roast))
+                    ->requiresConfirmation()
+                    ->action(function (Payment $payment): void {
+                        $payment->update([
+                            'roast' => null,
+                            'parseable' => true,
+                            'parse_started' => null,
+                        ]);
+
+                        CreateRoast::dispatch($payment);
+
+                        Notification::make()
+                            ->title('Starting roast regeneration!')
+                            ->icon('heroicon-o-arrow-path')
+                            ->success()->send();
                     }),
                 EditAction::make(),
                 ViewAction::make(),

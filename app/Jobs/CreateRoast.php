@@ -51,6 +51,7 @@ class CreateRoast implements ShouldQueue
 
             $this->payment->update([
                 'roast' => $roastResponse->json('choices.0.message.content'),
+                'parsed_at' => now(),
             ]);
 
             Log::info("Roast is ready for payment {$this->payment->id}.");
@@ -91,7 +92,7 @@ class CreateRoast implements ShouldQueue
             $prompt .= 'The website meta keywords are missing.';
         }
 
-        $prompt .= 'The first photo is a screenshot of the website on a phone and the second is a screenshot of the website on a computer.'.PHP_EOL;
+        $prompt .= 'The first photo is a screenshot of the website on a phone and the second is a screenshot of the website on a computer screen.'.PHP_EOL;
 
         $prompt .= 'First, please create a one sentence first impression of the website.'.PHP_EOL;
         $prompt .= 'After the first impresion please, create a 1 sentence feedback and 1 senence advice. In temrs of advice, you can use links and specific examples.'.PHP_EOL;

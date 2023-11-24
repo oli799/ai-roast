@@ -16,11 +16,14 @@ return new class extends Migration
             $table->uuid();
             $table->string('name');
             $table->string('email');
-            $table->string('stripe_id');
             $table->string('url');
             $table->string('computer_image_url')->nullable();
             $table->string('phone_image_url')->nullable();
             $table->json('roast')->nullable();
+            $table->boolean('parseable')->default(false);
+            $table->timestamp('paid_at')->nullable();
+            $table->timestamp('parse_started')->nullable();
+            $table->timestamp('parsed_at')->nullable();
             $table->timestamp('email_sent_at')->nullable();
             $table->timestamps();
         });

@@ -1,16 +1,31 @@
 @extends('layouts.app')
 
+@if(session('success'))
 @push('scripts')
-<script src="https://js.stripe.com/v3/"></script>
-@vite('resources/js/payment.js')
+    <script>
+        setTimeout(() => {
+            success_modal.showModal();
+        }, 300);
+    </script>
+
 @endpush
+@endif
 
 @section('content')
 <div class="px-4 pt-4">
-    <div class="mb-8 text-center">
-        <h2 class="mb-4 text-4xl font-extrabold tracking-tight">Welcome back 👋</h2>
-        <div class="text-base opacity-80">Ready to tick your habits?</div>
-    </div>
+    @if(session('success'))
+    <dialog id="success_modal" class="modal">
+        <div class="modal-box">
+            <h3 class="font-bold text-lg">Registration Successful! 🌟</h3>
+            <p>To access your personalized landing page roast, please complete the payment in the link bleow.</p>
+            <a href="{{session('url')}}" class="btn btn-primary mt-4">Continue</a>
+            <small class="block mt-4">
+            <span>If the button doesn't work, please manually copy the follwing link and paste it in your browser:</span>
+            <a class="text-secondary" href="{{session('url')}}">{{session('url')}}</a>
+            </small>
+        </div>
+    </dialog>
+    @endif
 
     <div class="card bg-base-200 max-w-xl mx-auto mb-8 md:mb-12">
         <div class="card-body">
@@ -23,13 +38,8 @@
 
                 <x-input name="url" type="url" />
 
-                <div class="form-control w-full mt-5">
-                    <div id="card-element" class="input input-ghost input-bordered w-full p-3"></div>
-                    <div id="card-errors" role="alert" class="text-sm text-red-500 mt-1"></div>
-                </div>
-
                 <div class="form-group pt-4">
-                    <button type="submit" class="btn btn-block btn-primary">Roast my landing page</button>
+                    <button type="submit" class="btn btn-block btn-primary">Roast my Page</button>
                 </div>
             </form>
         </div>

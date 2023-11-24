@@ -1,12 +1,24 @@
 @extends('layouts.app')
 
+@push('scripts')
+@if(!$payment->parsed_at)
+<script>
+    setInterval(() => {
+        window.location.reload();
+    }, 3000);
+</script>
+@endif
+@endpush
+
 @section('content')
 <div class="max-w-screen-xl mx-auto px-5 space-y-10">
-    @if(!empty($payment->roast))
-    @php
-    $roast = json_decode($payment->roast, true);
-    @endphp
-
+    @if(!$payment->paid_at)
+    <div class="text-center">
+        <h2 class="text-3xl font-extrabold tracking-tight text-center mt-12 md:mt-24 mb-5">Please complete your payment process to unlock your roast!</h2>
+        <a  href="{{route('payments.redirect', $payment)}}" class="btn btn-primary">Pay 9.99$</a>
+    </div>
+    @else
+    @if($payment->parsed_at && $payment->roast)
     <label class="swap">
         <input type="checkbox" />
 
@@ -32,13 +44,13 @@
 
     <section class="w-full text-center flex flex-col items-center space-y-5">
         <p class="secondary-content">First Impression:</p>
-        <h1 class="text-3xl text-center italic">{{$roast['first_impression']}}</h1>
+        <h1 class="text-3xl text-center italic">{{$payment->roast['first_impression']}}</h1>
     </section>
 
     <section class="flex flex-col items-center space-y-5">
         <p class="secondary-content">Details:</p>
         <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-5">
-            @foreach($roast['topics'] as $topic)
+            @foreach($payment->roast['topics'] as $topic)
             <div class="card w-full bg-base-200 shadow-xl">
                 <div class="card-body">
                     <h2 class="card-title">{{ucfirst(str_replace('_',' ',$topic['topic_name']))}}</h2>
@@ -59,14 +71,19 @@
 
     <section class="w-full text-center flex flex-col items-center space-y-5">
         <p class="secondary-content">Final thoughts:</p>
-        <h1 class="text-3xl text-center italic">{{$roast['final_thoughts']}}</h1>
+        <h1 class="text-3xl text-center italic">{{$payment->roast['final_thoughts']}}</h1>
     </section>
-
+    @elseif($payment->parsed_at && !$payment->roast)
+    <div class="text-center">
+        <h2 class="text-3xl font-extrabold tracking-tight text-center mt-12 md:mt-24 mb-5">Something went worng!</h2>
+        <p>please get in touch with me:  <a class="text-secondary" href="mailto:reider340@gmail.com">reider340@gmail.com</a></p>
+    </div>
     @else
-    <h1
-        class="font-extrabold text-transparent text-4xl md:text-6xl bg-clip-text bg-gradient-to-r from-red-300 to-red-600 -rotate-3 text-center">
-        Your review is on the way!
-    </h1>
+    <div class="text-center">
+        <h2 class="text-3xl font-extrabold tracking-tight text-center mt-12 md:mt-24 mb-5">Roasting your page...</h2>
+        <span class="loading loading-spinner loading-lg"></span>
+    </div>
+    @endif
     @endif
 </div>
 @endsection
