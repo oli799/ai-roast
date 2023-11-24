@@ -7,7 +7,9 @@ use App\Http\Requests\CreateRoast as CreateRoastRequest;
 use App\Http\Requests\CreateScreenshot;
 use App\Models\Payment;
 use App\Models\User;
+use App\Spiders\UrlSpider;
 use DOMDocument;
+use Exception;
 use Filament\Notifications\Notification;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -17,6 +19,8 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use RoachPHP\Roach;
+use RoachPHP\Spider\Configuration\Overrides;
 use Throwable;
 
 class CreateRoast implements ShouldQueue
@@ -43,7 +47,8 @@ class CreateRoast implements ShouldQueue
     public function handle(): void
     {
         try {
-            $prompt = $this->getPrompt($this->payment->url);
+            $content = $this->getWebsiteContent($this->payment->url);
+            $prompt = $this->getPrompt($this->payment->url, $content);
             $images = $this->getImagesArray();
 
             $roastRequest = new CreateRoastRequest(config('openai.api_key'), $prompt, $images);
@@ -75,10 +80,16 @@ class CreateRoast implements ShouldQueue
         }
     }
 
-    private function getPrompt(string $url): string
+    private function getPrompt(string $url, string $content): string
     {
         $prompt = 'You are a designer, marketing and seo expert who revivews the following website:'.PHP_EOL;
         $prompt .= "The website url is: {$url}.".PHP_EOL;
+
+        if ($content !== '' && $content !== '0') {
+            $prompt .= "The website content is: {$content}.".PHP_EOL;
+        } else {
+            $prompt .= 'The website content is missing.';
+        }
 
         if ($pageDescription = $this->getMetaTagValue($url, 'description')) {
             $prompt .= "The website meta description is: {$pageDescription}.".PHP_EOL;
@@ -95,7 +106,7 @@ class CreateRoast implements ShouldQueue
         $prompt .= 'The first photo is a screenshot of the website on a phone and the second is a screenshot of the website on a computer screen.'.PHP_EOL;
 
         $prompt .= 'First, please create a one sentence first impression of the website.'.PHP_EOL;
-        $prompt .= 'After the first impresion please, create a 1 sentence feedback and 1 senence advice. In temrs of advice, you can use links and specific examples.'.PHP_EOL;
+        $prompt .= 'After the first impresion please, create a 1 sentence feedback and 1 senence advice, if no advice needed please respond "No changes recommended". In temrs of advice, you can use links and specific examples.'.PHP_EOL;
         $prompt .= 'In each feedback topick you can use the subtopic_description key in the response format to get and idea of what the current subtopic is about.'.PHP_EOL;
         $prompt .= 'After the feedback please write a final sentence with a conclusion.'.PHP_EOL;
 
@@ -116,7 +127,7 @@ class CreateRoast implements ShouldQueue
                             'feedback' => '',
                         ],
                         [
-                            'subtopic_description' => 'Verify that the design is responsive and adapts well to different screen sizes, including mobile devices and tablets.',
+                            'subtopic_description' => 'Ensure that content and layout adapt appropriately to different screen sizes, providing an optimal user experience regardless of the device being used.',
                             'subtopic_name' => 'responsiveness',
                             'feedback' => '',
                         ],
@@ -145,7 +156,7 @@ class CreateRoast implements ShouldQueue
                     'advice' => '',
                 ],
                 [
-                    'topic_name' => 'visual_desing',
+                    'topic_name' => 'visual_design',
                     'subtopics' => [
                         [
                             'subtopic_description' => 'Assess the color scheme for harmony and readability. Consider the psychological impact of colors on users.',
@@ -185,6 +196,26 @@ class CreateRoast implements ShouldQueue
                         ],
                     ],
                     'advice' => '',
+                ],
+                [
+                    'topic_name' => 'Readability',
+                    'subtopics' => [
+                        [
+                            'subtopic_description' => 'Assess the perceived trustworthiness of the landing page. This could include factors like security icons, testimonials, or other trust indicators.',
+                            'subtopic_name' => 'trustworthiness',
+                            'feedback' => '',
+                        ],
+                        [
+                            'subtopic_description' => 'Inquire about the impact of social proof elements (such as reviews, testimonials, or social media endorsements) on the user\'s perception.',
+                            'subtopic_name' => 'social_proof',
+                            'feedback' => '',
+                        ],
+                        [
+                            'subtopic_description' => 'Find out if users are encountering any issues that prompt them to leave the page without converting.',
+                            'subtopic_name' => 'exit_points',
+                            'feedback' => '',
+                        ],
+                    ],
                 ],
                 [
                     'topic_name' => 'seo',
@@ -307,5 +338,83 @@ class CreateRoast implements ShouldQueue
         }
 
         return $metaTagValue;
+    }
+
+    private function getWebsiteContent(string $url): ?string
+    {
+        try {
+            $html = Roach::collectSpider(UrlSpider::class, new Overrides(startUrls: [$url]))[0]->get('content');
+        } catch (Exception) {
+            Log::error("Failed to get open {$url}.");
+
+            return null;
+        }
+
+        $content = [];
+
+        $elementsToParse = [
+            'h1',
+            'h2',
+            'h3',
+            'h4',
+            'h5',
+            'h6',
+            'p',
+            'a',
+            'img',
+            'ul',
+            'ol',
+            'table',
+            'span',
+            'button',
+            'input',
+            'strong',
+            'em',
+            'i',
+            'b',
+            'u',
+            's',
+            'strike',
+            'del',
+            'code',
+            'pre',
+            'blockquote',
+            'q',
+            'abbr',
+            'address',
+            'cite',
+            'small',
+            'li',
+            'marquee',
+            'center',
+            'td',
+            'tr',
+            'option',
+        ];
+
+        $dom = new DOMDocument();
+        @$dom->loadHTML($html);
+
+        foreach ($elementsToParse as $element) {
+            $elements = $dom->getElementsByTagName($element);
+            $this->append_tag_values($elements, $content);
+        }
+
+        if (count($content) <= 0) {
+            return null;
+        }
+
+        return implode("\n", array_unique($content));
+    }
+
+    private function append_tag_values(mixed $tag, array &$content): void
+    {
+        if (! $tag->length > 0) {
+            return;
+        }
+
+        foreach ($tag as $t) {
+            $content[] = trim(preg_replace('/\s\s+/', ' ', $t->nodeValue));
+        }
     }
 }

@@ -8,14 +8,34 @@
     }, 3000);
 </script>
 @endif
+
+<script>
+    const payButton = document.getElementById('pay_button');
+
+    if (payButton) {
+        payButton.addEventListener('click', (e) => {
+            axios.post('/payment/{{$payment->uuid}}/pay', {
+                _token: '{{csrf_token()}}'
+            }).then((response) => {
+                if (response.data.success) {
+                    window.open('http://stackoverflow.com', '_blank');
+                }
+            }).catch((error) => {
+                console.log(error);
+            });
+        });
+    }
+
+</script>
 @endpush
 
 @section('content')
 <div class="max-w-screen-xl mx-auto px-5 space-y-10">
     @if(!$payment->paid_at)
     <div class="text-center">
-        <h2 class="text-3xl font-extrabold tracking-tight text-center mt-12 md:mt-24 mb-5">Please complete your payment process to unlock your roast!</h2>
-        <a  href="{{route('payments.redirect', $payment)}}" class="btn btn-primary">Pay 9.99$</a>
+        <h2 class="text-3xl font-extrabold tracking-tight text-center mt-12 md:mt-24 mb-5">Please complete your payment
+            process to unlock your roast!</h2>
+        <button id="pay_button" href="#" class="btn btn-primary">Pay 9.99$</button>
     </div>
     @else
     @if($payment->parsed_at && $payment->roast)
@@ -76,7 +96,8 @@
     @elseif($payment->parsed_at && !$payment->roast)
     <div class="text-center">
         <h2 class="text-3xl font-extrabold tracking-tight text-center mt-12 md:mt-24 mb-5">Something went worng!</h2>
-        <p>please get in touch with me:  <a class="text-secondary" href="mailto:reider340@gmail.com">reider340@gmail.com</a></p>
+        <p>please get in touch with me: <a class="text-secondary"
+                href="mailto:reider340@gmail.com">reider340@gmail.com</a></p>
     </div>
     @else
     <div class="text-center">

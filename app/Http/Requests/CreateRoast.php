@@ -56,7 +56,7 @@ class CreateRoast extends SoloRequest implements HasBody
     {
         return [
             'model' => 'gpt-4-vision-preview',
-            'max_tokens' => 1500,
+            'max_tokens' => 2023,
             'messages' => [
                 [
                     'role' => 'user',

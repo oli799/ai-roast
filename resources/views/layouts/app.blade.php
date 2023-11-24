@@ -5,10 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{config('app.name')}}</title>
-    @vite('resources/css/app.css')
-    {{-- <script src="https://js.stripe.com/v3/"></script> --}}
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="https://cdn.jsdelivr.net/npm/theme-change@2.0.2/index.js"></script>
-    @stack('scripts')
 </head>
 
 <body>
@@ -52,6 +50,8 @@
             <p>Copyright © {{date('Y')}} - All right reserved by {{config('app.name')}}</p>
         </aside>
     </footer>
+
+    @stack('scripts')
 </body>
 
 </html>

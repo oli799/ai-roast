@@ -16,7 +16,6 @@ use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\EditAction;
-use Filament\Tables\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Mail;
@@ -73,19 +72,16 @@ class PaymentResource extends Resource
                     ->placeholder('https://example.com'),
 
                 TextInput::make('computer_image_url')
-                    ->required()
                     ->url()
                     ->maxLength(255)
                     ->placeholder('https://example.com'),
 
                 TextInput::make('phone_image_url')
-                    ->required()
                     ->url()
                     ->maxLength(255)
                     ->placeholder('https://example.com'),
 
                 Textarea::make('roast')
-                    ->required()
                     ->columnSpan(2)
                     ->autosize()
                     ->json(),
@@ -177,7 +173,6 @@ class PaymentResource extends Resource
                             ->success()->send();
                     }),
                 EditAction::make(),
-                ViewAction::make(),
             ])
             ->bulkActions([
             ]);

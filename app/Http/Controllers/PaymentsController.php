@@ -4,12 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Payment;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 
 class PaymentsController extends Controller
 {
     public function show(Payment $payment): View
     {
+        $payment->roast = json_decode($payment->roast, null, 512, JSON_THROW_ON_ERROR);
+
         return view('payments.show', ['payment' => $payment]);
     }
 
@@ -38,12 +41,14 @@ class PaymentsController extends Controller
         ]);
     }
 
-    public function redirect(Payment $payment): RedirectResponse
+    public function pay(Payment $payment): JsonResponse
     {
         $payment->update([
             'paid_at' => now(),
         ]);
 
-        return redirect()->away('https://buy.stripe.com/8wMaEQ92n2Eq9Mc144');
+        return response()->json([
+            'success' => true,
+        ]);
     }
 }

@@ -46,6 +46,10 @@ class Payment extends Model
     use HasUuid;
 
     protected $casts = [
+        'parseable' => 'boolean',
+        'paid_at' => 'datetime',
+        'parse_started' => 'datetime',
+        'parsed_at' => 'datetime',
         'email_sent_at' => 'datetime',
         'roast' => 'array',
     ];
