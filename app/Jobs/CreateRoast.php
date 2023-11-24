@@ -9,6 +9,8 @@ use App\Models\Payment;
 use App\Models\User;
 use App\Spiders\UrlSpider;
 use DOMDocument;
+use DOMElement;
+use DOMNodeList;
 use Exception;
 use Filament\Notifications\Notification;
 use Illuminate\Bus\Queueable;
@@ -80,7 +82,7 @@ class CreateRoast implements ShouldQueue
         }
     }
 
-    private function getPrompt(string $url, string $content): string
+    private function getPrompt(string $url, ?string $content): string
     {
         $prompt = 'You are a designer, marketing and seo expert who revivews the following website:'.PHP_EOL;
         $prompt .= "The website url is: {$url}.".PHP_EOL;
@@ -400,21 +402,33 @@ class CreateRoast implements ShouldQueue
             $this->append_tag_values($elements, $content);
         }
 
-        if (count($content) <= 0) {
+        if ((is_countable($content) ? count($content) : 0) <= 0) {
             return null;
         }
 
         return implode("\n", array_unique($content));
     }
 
-    private function append_tag_values(mixed $tag, array &$content): void
+    /**
+     * @param  DOMNodeList<DOMElement>  $tag
+     * @param  array<string>  $content
+     */
+    private function append_tag_values(DOMNodeList $tag, array &$content): void
     {
         if (! $tag->length > 0) {
             return;
         }
 
         foreach ($tag as $t) {
-            $content[] = trim(preg_replace('/\s\s+/', ' ', $t->nodeValue));
+            if (! $t->nodeValue) {
+                continue;
+            }
+
+            if (! $replaced = preg_replace('/\s\s+/', ' ', (string) $t->nodeValue)) {
+                continue;
+            }
+
+            $content[] = trim($replaced);
         }
     }
 }
