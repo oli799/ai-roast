@@ -11,7 +11,9 @@ class PaymentsController extends Controller
 {
     public function show(Payment $payment): View
     {
-        $payment->roast = json_decode((string) $payment->roast, null, 512, JSON_THROW_ON_ERROR);
+        if (! empty($payment->roast)) {
+            $payment->roast = json_decode((string) $payment->roast, null, 512, JSON_THROW_ON_ERROR);
+        }
 
         return view('payments.show', ['payment' => $payment]);
     }

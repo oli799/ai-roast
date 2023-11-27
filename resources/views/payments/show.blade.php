@@ -39,54 +39,35 @@
     </div>
     @else
     @if($payment->parsed_at && $payment->roast)
-    <label class="swap">
-        <input type="checkbox" />
-
-        <div class="mockup-browser bg-base-300 swap-off" style="max-height: 30rem;">
-            <div class="mockup-browser-toolbar">
-                <div class="input">https://daisyui.com</div>
-            </div>
-            <div class="overflow-y-scroll" style="max-height: 30rem;">
-                <img class="object-cover w-full object-top" src="{{$payment->computer_image_url}}">
-            </div>
-        </div>
-
-        <div class="mockup-phone swap-on">
-            <div class="camera"></div>
-            <div class="display">
-                <div class="artboard phone-1 overflow-y-auto">
-                    <img src="{{$payment->computer_image_url}}" cla>
-                </div>
-            </div>
-        </div>
-
-    </label>
-
     <section class="w-full text-center flex flex-col items-center space-y-5">
         <p class="secondary-content">First Impression:</p>
         <h1 class="text-3xl text-center italic">{{$payment->roast['first_impression']}}</h1>
     </section>
 
-    <section class="flex flex-col items-center space-y-5">
-        <p class="secondary-content">Details:</p>
-        <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-5">
+    <section class="flex flex-col space-y-10">
             @foreach($payment->roast['topics'] as $topic)
-            <div class="card w-full bg-base-200 shadow-xl">
-                <div class="card-body">
-                    <h2 class="card-title">{{ucfirst(str_replace('_',' ',$topic['topic_name']))}}</h2>
-                    @foreach ($topic['subtopics'] as $subtopic)
-                    <p class="text-sm">{{ucfirst(str_replace('_',' ',$subtopic['subtopic_name']))}}</p>
-                    <small class="text-xs">{{$subtopic['feedback']}}</small>
-                    @endforeach
+            <div class="flex flex-col space-y-4">
+                <div>
+                    <h2 class="font-extrabold text-2xl md:text-3xl tracking-tight mb-3">{{ucfirst(str_replace('_',' ',$topic['topic_name']))}}</h2>
+                    <p class="md:text-lg opacity-90"><span class="font-bold">Advice:</span> {{$topic['advice']}}</p>
                 </div>
-
-                <div class="card-actions">
-                    <p class="text-xs">{{$topic['advice']}}</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                    @foreach ($topic['subtopics'] as $subtopic)
+                        <div class="flex-1 w-full card card-compact md:card-normal bg-base-200 text-left">
+                            <div class="card-body flex-row md:flex-col items-center md:items-start gap-4 md:gap-8">
+                                <span class="text-5xl md:text-6xl">{{$subtopic['emoji']}}</span>
+                                <div>
+                                    <div class="card-title pb-2">{{ucfirst(str_replace('_',' ',$subtopic['subtopic_name']))}}</div>
+                                    <div class="italic opacity-80">
+                                        <div>{{$subtopic['feedback']}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
             </div>
             @endforeach
-
-        </div>
     </section>
 
     <section class="w-full text-center flex flex-col items-center space-y-5">
