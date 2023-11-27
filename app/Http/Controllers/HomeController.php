@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Payment;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\Cache;
 
 class HomeController extends Controller
 {
@@ -13,7 +12,11 @@ class HomeController extends Controller
      */
     public function __invoke(): View
     {
-        $payments = Cache::rememberForever('home-rostasts', fn () => Payment::query()->whereIn('id', range(1, 4))->get());
+        $payments = Payment::query()
+            ->where('listable', true)
+            ->whereNotNull('parsed_at')
+            ->whereNotNull('roast')
+            ->get();
 
         return view('home', ['payments' => $payments]);
     }

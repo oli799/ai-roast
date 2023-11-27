@@ -11,7 +11,7 @@
         class="input input-ghost input-bordered w-full @if($errors->has(strtolower($name))) input-error @endif" />
     @if($errors->has(strtolower($name)))
     <label class="label">
-        <span class="label-text-alt">{{$errors->first(strtolower($name))}}</span>
+        <span class="label-text-alt text-error">{{$errors->first(strtolower($name))}}</span>
     </label>
     @endif
 </div>

@@ -35,6 +35,7 @@ class PaymentsController extends Controller
             'name' => request()->input('name'),
             'url' => request()->input('url'),
             'email' => request()->input('email'),
+            'listable' => (bool) request()->input('listable'),
         ]);
 
         return redirect()->back()->with([

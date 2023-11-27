@@ -37,11 +37,11 @@
     </div>
 
     <div class="relative w-full md:w-5/12 flex flex-col justify-start items-start gap-16 md:gap-24">
-
+        <img class="w-full" src="{{asset('images/hero.png')}}">
     </div>
 </section>
 
-<section class="grid gap-12 md:gap-24 text-center md:text-left pb-12 md:pb-24">
+<section class="grid gap-12 text-center md:text-left pb-12 md:pb-24">
     <div class="text-center">
         <h2 class="font-extrabold text-4xl md:text-5xl tracking-tight mb-4 md:mb-6">See the Magic Unfold</h2>
         <p class="md:text-lg opacity-90">Curious about what {{config('app.name')}} can do for your landing pages? Take a
@@ -62,7 +62,7 @@
 </section>
 
 <section class="max-w-4xl mx-auto" id="faq">
-    <h2 class="text-3xl font-extrabold tracking-tight text-center mb-12 md:mb-24">Frequently asked questions</h2>
+    <h2 class="text-3xl font-extrabold tracking-tight text-center mb-12">Frequently asked questions</h2>
 
     <div class="collapse collapse-plus bg-base-200 mb-5">
         <input type="radio" name="my-accordion-3" checked="checked" />
@@ -132,7 +132,7 @@
         </div>
         <div class="collapse-content">
             <p>If you have any questions or need assistance, reach out to us via <a href="mailto:reider340@gmail.com"
-                    class="text-secondary">email</a> or through our contact form.</p>
+                    class="link-secondary">email</a> or through our contact form.</p>
         </div>
     </div>
 

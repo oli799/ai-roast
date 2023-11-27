@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('computer_image_url')->nullable();
             $table->string('phone_image_url')->nullable();
             $table->json('roast')->nullable();
+            $table->boolean('listable')->default(false);
             $table->boolean('parseable')->default(false);
             $table->timestamp('paid_at')->nullable();
             $table->timestamp('parse_started')->nullable();

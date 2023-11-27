@@ -44,6 +44,10 @@ class PaymentResource extends Resource
                     ->required()
                     ->default(false),
 
+                Toggle::make('listable')
+                    ->required()
+                    ->default(false),
+
                 DateTimePicker::make('paid_at')
                     ->nullable()
                     ->native(false),
@@ -105,6 +109,10 @@ class PaymentResource extends Resource
                     ->sortable(),
 
                 TextColumn::make('url')
+                    ->searchable()
+                    ->sortable(),
+
+                TextColumn::make('listable')
                     ->searchable()
                     ->sortable(),
 

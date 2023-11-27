@@ -46,6 +46,7 @@ class Payment extends Model
     use HasUuid;
 
     protected $casts = [
+        'listable' => 'boolean',
         'parseable' => 'boolean',
         'paid_at' => 'datetime',
         'parse_started' => 'datetime',

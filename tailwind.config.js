@@ -10,7 +10,8 @@ module.exports = {
     theme: {
         extend: {
             fontFamily: {
-            sans: ["Inter", ...defaultTheme.fontFamily.sans],
+                sans: ["Inter", ...defaultTheme.fontFamily.sans],
+                kalam: ["Kalam", ...defaultTheme.fontFamily.sans],
             },
         },
     },
@@ -23,8 +24,7 @@ module.exports = {
                     "base-100": "#f2f2f2",
                     "base-200": "#ffffff",
                   },
-            },
-            "dark",
+            }
         ],
     },
 

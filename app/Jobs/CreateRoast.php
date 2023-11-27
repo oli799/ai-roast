@@ -213,7 +213,7 @@ class CreateRoast implements ShouldQueue
                     'advice' => '',
                 ],
                 [
-                    'topic_name' => 'Readability',
+                    'topic_name' => 'Reliability',
                     'subtopics' => [
                         [
                             'subtopic_description' => 'Assess the perceived trustworthiness of the landing page. This could include factors like security icons, testimonials, or other trust indicators.',
