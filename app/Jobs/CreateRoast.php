@@ -85,6 +85,7 @@ class CreateRoast implements ShouldQueue
     private function getPrompt(string $url, ?string $content): string
     {
         $prompt = 'You are a designer, marketing and seo expert who revivews the following website:'.PHP_EOL;
+        $prompt .= 'Please try to be as objective as possible, the review need to be clear and understable.'.PHP_EOL;
         $prompt .= "The website url is: {$url}.".PHP_EOL;
 
         if ($content !== '' && $content !== '0') {
@@ -218,6 +219,7 @@ class CreateRoast implements ShouldQueue
                             'feedback' => '',
                         ],
                     ],
+                    'advice' => '',
                 ],
                 [
                     'topic_name' => 'seo',
