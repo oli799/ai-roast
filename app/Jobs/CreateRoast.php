@@ -90,7 +90,7 @@ class CreateRoast implements ShouldQueue
         if ($content !== '' && $content !== '0') {
             $prompt .= "The website content is: {$content}.".PHP_EOL;
         } else {
-            $prompt .= 'The website content is missing.';
+            $prompt .= 'Please try to get the website content from the photos.'.PHP_EOL;
         }
 
         if ($pageDescription = $this->getMetaTagValue($url, 'description')) {
