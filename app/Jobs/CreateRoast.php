@@ -392,6 +392,9 @@ class CreateRoast implements ShouldQueue
             'td',
             'tr',
             'option',
+            'dl',
+            'dt',
+            'dd',
         ];
 
         $dom = new DOMDocument();
