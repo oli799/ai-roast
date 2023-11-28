@@ -1,9 +1,5 @@
 @extends('layouts.app')
 
-@push('scripts')
-@vite('resources/js/payment.js')
-@endpush
-
 @section('content')
 <section
     class="pt-4 pb-12 md:pt-24 md:pb-12 md:mb-12 flex flex-col md:flex-row justify-center items-center md:items-start space-y-20 md:space-y-0 md:space-x-6 lg:space-x-12 text-center md:text-left">
@@ -51,7 +47,7 @@
     <div class="grid md:grid-cols-3 gap-5">
         @foreach ($payments as $payment)
         <a href="{{route('payments.show', $payment)}}"
-            class="mockup-browser bg-base-200 cursor-pointer hover:opacity-30 transition-all duration-300">
+            class="mockup-browser bg-base-200 cursor-pointer hover:opacity-30 transition-all duration-300 shadow-lg">
             <div class="mockup-browser-toolbar">
                 <div class="input">{{$payment->url}}</div>
             </div>
