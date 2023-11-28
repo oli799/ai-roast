@@ -18,7 +18,7 @@
                 _token: '{{csrf_token()}}'
             }).then((response) => {
                 if (response.data.success) {
-                    window.open('http://stackoverflow.com', '_blank');
+                    window.open('https://buy.stripe.com/9AQ8yi94135c2MU8ww', '_blank');
                 }
             }).catch((error) => {
                 console.log(error);
